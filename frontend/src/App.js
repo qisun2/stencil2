@@ -204,8 +204,8 @@ class App extends Component {
               <DataProvider value={appData}>
                 <Navbar searchOptions={this.state.allLibraryList}  defaultText="Search by library ID" handle="getLib" />
                 <Switch>
-                  <Route exact path="/" component={LandingPage} />
-                  <Route exact path="/libraries" component={LibrariesPage} />
+                  <Route exact path="/samples" component={LandingPage} />
+                  <Route exact path="/" component={LibrariesPage} />
                   <Route
                     exact
                     path="/factor/:protein_name"
