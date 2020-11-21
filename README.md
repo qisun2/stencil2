@@ -61,7 +61,25 @@ Installation:
    npm start
    ```
 
-4. Open browser
+4. Post example data.
+
+   Modify the postData.py and postLibrary.py located in stencil2/backend/utils.
+
+   Replace the URL from "http://localhost/samples" to appropriate backend URL.
+
+   ```
+   cd stencil2/backend/utils
+   
+   python postData.py ../sampleData/example.json
+   
+   python postLibrary.py ../sampleData/example_lib.json
+   ```
+
+   
+
+   
+
+5. Open browser
 
    backend url:  http://stencil.biohpc.cornell.edu:8081
 
