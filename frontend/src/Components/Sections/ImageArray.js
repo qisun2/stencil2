@@ -99,11 +99,22 @@ class ImageArray extends React.Component {
             >
               {
                 this.props.data[selectedTab].map(item => {
-                  return (
-                    <Grid item>
-                    <img src={item.URL} alt={item.dataLabel} title={item.dataLabel} />
-                    </Grid>
-                  );
+                  switch (item.dataType.toLowerCase()) {
+                    case "jpg":
+                    case "png": 
+                    return (
+                      <Grid item>
+                      <img src={item.URL} alt={item.dataLabel} title={item.dataLabel} />
+                      </Grid>
+                    );
+
+                    default:
+                    return(
+                      <Grid item>
+                        dataType not known: {item.dataType}
+                      </Grid>
+                    )
+                  };
                 })
               }
             </Grid>
