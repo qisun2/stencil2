@@ -50,16 +50,6 @@ Used to retrieve list of libraries in Stencil database based on some search crit
 					"projectId": "1",
 					"groupTag": {"targetId":"abc"},
 					"libraryType": "RNAseq",
-					"libraryData":[
-                            {	"layoutId": "tag-pileup-raw-data",
-                            	"layoutTitle": "Tag Pileup",
-                            	"workflowStepId": "180208b3deba8d04",
-                            	"workflowId": "1cd8e2f6b131e891",
-                            	"genome" : "sacCer3_cegr",	
-                           		"dataType": "txt",
-                           		"URL": "http://xxx.xxx.xxx/xxx",
-                            }
-						],
 					"createdBy": "user1",
 					"createTimestamp":"2020-11-02",
 					"updatedBy": "user2",
