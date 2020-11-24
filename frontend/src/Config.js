@@ -2,7 +2,6 @@
 
 const settings = {
   apiURL: "http://localhost:8081",
-  siteAvailability: "public",
   samplesEndpoint: "/samples",
   librariesEndPoint: "/libraries",
   libraryPageEndPoint: "/libraries/dbid",

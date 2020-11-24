@@ -1,4 +1,4 @@
-# stencil
+# stencil v2.0.0
 A web engine for visualizing and sharing life science datasets
 
 ## Documentation
@@ -44,6 +44,10 @@ Installation:
    c. stencil2/frontend/src/Config.js
 
    apiURL: "http://stencil.biohpc.cornell.edu:8081"    // URL of the backend server
+   samplesEndpoint: "/samples",       // api endpoint for retrieve sample list (deprecated)
+   librariesEndPoint: "/libraries",		// api endpoint for retrieve library list
+   libraryPageEndPoint: "/libraries/dbid",   //api endpoint for retrieve a library based on db id
+   trackHubPrefix: "http://genome.ucsc.edu/cgi-bin/hgTracks?db=sacCer3&hubUrl=" //genome growser URL prefix
 
 
 3. Start the backend and front end server.
