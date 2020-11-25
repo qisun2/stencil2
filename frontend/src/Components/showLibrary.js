@@ -50,11 +50,14 @@ class Library extends Component {
   state = {
     data: null,
     dbid: null,
+    extraRemoteDataObj: null,
     loading: true,
     message: "Fetching data for the library ...",
   };
 
   loadData = id => () => {
+    var getList = [];
+    var URLList = [];
     let dataURL =
     Config.settings.apiURL + Config.settings.libraryPageEndPoint + "/" + id;
     axios
@@ -62,10 +65,39 @@ class Library extends Component {
       .then(res => {        
         this.setState({
           dbid: id,
-          data: res.data.libraries[0],
-          loading: false,
+          data: res.data.libraries[0]
         });
       })
+      .then (()=>{
+        var libDataList = this.state.data.libraryData;
+
+        libDataList.map((item) =>{
+          if (item.dataType ==="linePlot"){
+            var originalURL = item.URL;
+            var proxyURL = originalURL.replace("128.84.9.200:8080", "localhost:8081");
+            getList.push(axios.get(proxyURL));
+            URLList.push(originalURL);
+          }
+
+        });
+        return axios.all(getList);
+      }
+      )
+      .then (axios.spread((...responses) =>{
+        var url2data = {};
+        let i=0;
+        responses.map(
+          item =>{
+            url2data[URLList[i]]= item.data;
+            i = i +1;
+            
+          }
+        );
+        this.setState({extraRemoteDataObj:url2data});
+
+      }
+      ))
+      .then(()=>{this.setState({loading:false})})
       .catch(error => {
         console.log(error);
       });
@@ -122,7 +154,7 @@ class Library extends Component {
         <Card>
           <HeaderInfo data={this.state.data} />
         </Card>
-        <LayoutList libraryData={this.state.data.libraryData} />
+        <LayoutList libraryData={this.state.data.libraryData} extraId2data={this.state.extraRemoteDataObj} />
       </div>
     );
 

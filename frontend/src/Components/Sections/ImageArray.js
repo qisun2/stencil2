@@ -1,4 +1,6 @@
 import React from "react";
+import axios from "axios";
+
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import CardContent from "@material-ui/core/CardContent";
@@ -7,6 +9,8 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import LinePlot from "../SubComponents/LinePlot2";
+
 
 const styles = {
   card: {
@@ -39,6 +43,8 @@ class ImageArray extends React.Component {
     });
   };
   
+
+
   render() {
     const { classes } = this.props;
     const { selectedTab } = this.state;
@@ -56,7 +62,6 @@ class ImageArray extends React.Component {
         count++;
       }
     }
-
 
     return (
       <div className={classes.card}>
@@ -100,6 +105,7 @@ class ImageArray extends React.Component {
               {
                 this.props.data[selectedTab].map(item => {
                   switch (item.dataType.toLowerCase()) {
+                    case "image":
                     case "jpg":
                     case "png": 
                     return (
@@ -107,6 +113,13 @@ class ImageArray extends React.Component {
                       <img src={item.URL} alt={item.dataLabel} title={item.dataLabel} />
                       </Grid>
                     );
+
+                    case "lineplot":
+                      return (
+                        <Grid item>
+                        <LinePlot chartData={this.props.extraId2data[item.URL].compositePlot} />
+                        </Grid>
+                      );
 
                     default:
                     return(
