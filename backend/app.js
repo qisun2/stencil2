@@ -22,6 +22,8 @@ const helmet = require("helmet");
 // adding mongoose ODM for mongodb
 const mongoose = require("mongoose");
 
+const {createProxyMiddleware} = require('http-proxy-middleware');
+
 // To handle all deprication warnings from mongoose
 // https://mongoosejs.com/docs/deprecations.html
 mongoose.set("useNewUrlParser", true);
@@ -50,6 +52,15 @@ const libraryRoutes = require("./api/routes/libraries");
 
 // adding static resources
 app.use("/images", express.static("./sampleData/Images"));
+
+//add api proxy
+//app.use('/datasets', createProxyMiddleware({ target: 'http://128.84.9.200:8080', changeOrigin: true }));
+let proxyURLs = JSON.parse(process.env.PROXY_SETTING);
+for (var key of Object.keys(proxyURLs)) 
+{
+  app.use(key, createProxyMiddleware({ target: proxyURLs[key], changeOrigin: true }));
+}
+
 
 // adding helmet
 app.use(helmet());

@@ -23,5 +23,8 @@
     "mongoose": "^5.6.10",
     "morgan": "^1.9.1",
     "nodemon": "^1.19.1"
+  },
+  "devDependencies": {
+    "http-proxy-middleware": "^1.0.6"
   }
 }
