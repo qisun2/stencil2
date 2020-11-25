@@ -28,9 +28,13 @@ const styles = {
 
 function FeatureCompositePlot(props) {
   const { classes } = props;
+  var chartData = props.chartData;
+  if (chartData["Xaxis"] === undefined ){
+    return "The data does not hava a required key Xaxis";
+  }
   let sxValues = props.chartData.Xaxis.split(",");
   let syValues = props.chartData.sampleSenseYaxis.split(",");
-  let cxValues = props.chartData.Xaxis.split(",");
+  let cxValues = sxValues;
   let cyValues = props.chartData.sampleAntiYaxis.split(",");
 
   let sData5 = [];
@@ -62,11 +66,11 @@ function FeatureCompositePlot(props) {
 
   const plotData = [
     {
-      id: "control",
+      id: "antiSense",
       data: cData5
     },
     {
-      id: "sample",
+      id: "sense",
       data: sData5
     }
   ];

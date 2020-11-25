@@ -71,7 +71,7 @@ class Library extends Component {
       .then (()=>{
         var libDataList = this.state.data.libraryData;
 
-        libDataList.map((item) =>{
+        libDataList.forEach((item) =>{
           if (item.dataType ==="linePlot"){
             var originalURL = item.URL;
             var proxyURL = originalURL.replace("128.84.9.200:8080", "localhost:8081");
@@ -86,7 +86,7 @@ class Library extends Component {
       .then (axios.spread((...responses) =>{
         var url2data = {};
         let i=0;
-        responses.map(
+        responses.forEach(
           item =>{
             url2data[URLList[i]]= item.data;
             i = i +1;

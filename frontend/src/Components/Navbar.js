@@ -60,7 +60,7 @@ class LandingPage extends React.Component {
             </Grid>
 
             <Grid item sm={"auto"}>
-              <Link to="/libraries">
+              <Link to="/">
                 <Tooltip title="Home" aria-label="home">
                   <IconButton color="primary">
                     <HomeIcon />
