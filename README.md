@@ -33,7 +33,7 @@ Installation:
    DB_NAME="testDB"    // Mongo db database name
    API_PORT="8081          // API port name
 
-   PROXY_SETTING='{"/datasets" : "http://xxx.xxxx.xxxx.xx:xxxx"}'   // proxy setting
+   PROXY_SETTING='{"/xxxxxx" : "http://xxx.xxxx.xxxx.xx:xxxx"}'   // proxy setting
 
    * If your frontend app needs to access api call from 3rd party, e.g. galaxy server, you need to use proxy  through backend server. In the frontend app, the URL "http://xxx.xxxx.xxxx.xx:xxxx/datasets/{options}" should be replaced with "http://backendserver:xxxx/datasets/{options}". Most browsers would prohibit cross-domain call for the front end, so that proxy is needed.
 

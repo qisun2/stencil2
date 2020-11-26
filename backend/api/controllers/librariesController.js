@@ -1,3 +1,4 @@
+const axios = require( "axios");
 // require mongoose
 const mongoose = require("mongoose");
 
@@ -52,15 +53,74 @@ exports.queryLibraryDataById = (req, res, next) => {
   queryId = req.params.dbid;
   console.log("query the db");
   console.log(queryId);
-  myLib.find({'_id': queryId})
+  myLib.findOne({'_id': queryId})
     .exec()
-    .then(docs => {
+    .then(doc => {
+      
       returnMessage = "";
-      const response = {
-        count: docs.length,
-        message: returnMessage,
-        libraries: docs.map(doc => {
-          return {
+
+      var getList = [];
+      var URLList = [];
+      var url2data = {};
+      
+      doc.libraryData.forEach(item => {
+        if (item.dataType ==="linePlot"){
+          var originalURL = item.URL;
+          var proxyURL = originalURL.replace("128.84.9.200:8080", "localhost:8081");
+          getList.push(axios.get(proxyURL));
+          URLList.push(originalURL);
+        }
+      })
+      if (getList.length>0){
+        axios.all(getList)
+        .then (axios.spread((...responses) =>{
+          
+          
+          let i=0;
+          responses.forEach(
+            item =>{
+              url2data[URLList[i]]= item.data;
+              i = i +1;
+              doc.libraryData.forEach(item=>{
+                if (url2data[item.URL] !== undefined) {
+                  item["preLoadData"] =url2data[item.URL]; 
+
+                }
+              })
+              
+            }
+          );
+
+
+          const response = {
+            count: 1,
+            message: returnMessage,
+            libraries:[{
+              dbId: doc._id,
+              libraryId: doc.libraryId,
+              sampleId: doc.sampleId,
+              projectId: doc.projectId,
+              groupTag: doc.groupTag,
+              libraryData: doc.libraryData,
+              libraryType: doc.libraryType,
+              createdBy: doc.createdBy,
+              createTimestamp : doc.createTimestamp,
+              updatedBy : doc.updatedBy,
+              updateTimestamp : doc.updateTimestamp,
+              status: doc.status
+            }]
+          };
+          res.status(200).json(response);
+
+        }))
+
+      }
+      else
+      {
+        const response = {
+          count: 1,
+          message: returnMessage,
+          libraries:[{
             dbId: doc._id,
             libraryId: doc.libraryId,
             sampleId: doc.sampleId,
@@ -73,10 +133,12 @@ exports.queryLibraryDataById = (req, res, next) => {
             updatedBy : doc.updatedBy,
             updateTimestamp : doc.updateTimestamp,
             status: doc.status
-          };
-        })
-      };
-      res.status(200).json(response);
+          }]
+        };
+        res.status(200).json(response);
+      }
+
+
     })
     .catch(err => {
       console.log(err);

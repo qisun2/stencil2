@@ -43,19 +43,19 @@ const styles = theme => ({
 
 class LayoutList extends React.Component {
   state = {
-    libraryData: this.props.libraryData
+    libraryData: this.props.libraryData,
   };
 
   componentDidMount() {
     this.setState({
-      libraryData: this.props.libraryData
+      libraryData: this.props.libraryData,
     });
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.libraryData !== this.props.libraryData) {
       this.setState({
-        libraryData: this.props.libraryData
+        libraryData: this.props.libraryData,
       });
     }
   }

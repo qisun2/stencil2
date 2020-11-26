@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -109,15 +108,15 @@ class ImageArray extends React.Component {
                     case "jpg":
                     case "png": 
                     return (
-                      <Grid item>
+                      <Grid item key={item.stepId}>
                       <img src={item.URL} alt={item.dataLabel} title={item.dataLabel} />
                       </Grid>
                     );
 
                     case "lineplot":
                       return (
-                        <Grid item>
-                        <LinePlot chartData={this.props.extraId2data[item.URL].compositePlot} />
+                        <Grid item key={item.stepId}>
+                        <LinePlot chartData={item.preLoadData?item.preLoadData.compositePlot: {}} />
                         </Grid>
                       );
 
