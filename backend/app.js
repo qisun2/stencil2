@@ -55,11 +55,14 @@ app.use("/images", express.static("./sampleData/Images"));
 
 //add api proxy
 //app.use('/datasets', createProxyMiddleware({ target: 'http://128.84.9.200:8080', changeOrigin: true }));
-let proxyURLs = JSON.parse(process.env.PROXY_SETTING);
-for (var key of Object.keys(proxyURLs)) 
-{
-  app.use(key, createProxyMiddleware({ target: proxyURLs[key], changeOrigin: true }));
+if (process.env.PROXY_SETTING!==undefined){
+  let proxyURLs = JSON.parse(process.env.PROXY_SETTING);
+  for (var key of Object.keys(proxyURLs)) 
+  {
+    app.use(key, createProxyMiddleware({ target: proxyURLs[key], changeOrigin: true }));
+  }
 }
+
 
 
 // adding helmet

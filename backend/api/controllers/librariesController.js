@@ -63,14 +63,16 @@ exports.queryLibraryDataById = (req, res, next) => {
       var URLList = [];
       var url2data = {};
       
-      doc.libraryData.forEach(item => {
-        if (item.dataType ==="linePlot"){
-          var originalURL = item.URL;
-          var proxyURL = originalURL.replace("128.84.9.200:8080", "localhost:8081");
-          getList.push(axios.get(proxyURL));
-          URLList.push(originalURL);
-        }
-      })
+      if ((doc!==null) && (doc.libraryData!==undefined)){
+        doc.libraryData.forEach(item => {
+          if (item.dataType ==="linePlot"){
+            var originalURL = item.URL;
+            getList.push(axios.get(originalURL));
+            URLList.push(originalURL);
+          }
+        })
+      }
+
       if (getList.length>0){
         axios.all(getList)
         .then (axios.spread((...responses) =>{
