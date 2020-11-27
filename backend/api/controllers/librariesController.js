@@ -65,8 +65,9 @@ exports.queryLibraryDataById = (req, res, next) => {
       
       if ((doc!==null) && (doc.libraryData!==undefined)){
         doc.libraryData.forEach(item => {
-          if ((item.preLoadData!==undefined) && (item.dataType ==="linePlot")){
+          if ((item.preLoadData!==null) && (item.dataType ==="linePlot")){
             var originalURL = item.URL;
+            console.log("item.URL");
             getList.push(axios.get(originalURL));
             URLList.push(originalURL);
           }
