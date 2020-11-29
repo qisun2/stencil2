@@ -119,6 +119,8 @@ class App extends Component {
     searchOptions: [],
     allLibraryList:[],
     data: null,
+    currentProject: null,
+    projList: null
   };
 
   componentDidMount() {
@@ -127,6 +129,12 @@ class App extends Component {
     const sampleEndPint = Config.settings.samplesEndpoint;
     const libraryEndPoint = Config.settings.librariesEndPoint;
 
+    const url = window.location.href;
+    let proj = null;
+    const found = url.match("project/(.+)$");
+    if (found){
+      proj = found[1];
+    }
 
     axios
       .get(apiBaseURL + sampleEndPint)
@@ -152,13 +160,26 @@ class App extends Component {
         console.log(err);
       });
 
+    let proj2Libs = {};
     axios
       .get(apiBaseURL + libraryEndPoint)
       .then(res => {
-        const libList = res.data.libraries.map(library => {
-          return { "dbid": library.dbId, "libid": library.libraryId };
-        });
-        //  create an array of unique targets
+        res.data.libraries.forEach(library => {
+          if (! proj2Libs.hasOwnProperty(library.projectId)){
+            proj2Libs[library.projectId]= [];
+          }
+          proj2Libs[library.projectId].push ({ "dbid": library.dbId, "libid": library.libraryId });
+        })
+
+        let theProjList = Object.keys(proj2Libs).sort();
+
+        if ((proj === null) && (theProjList.length>0)) {
+          proj = theProjList[0];
+        }
+
+        let projSearchList = theProjList.map(item=>{return({value:item, label:item})})
+        
+        const libList = proj2Libs[proj];
 
         // create the search options; [replace with existing search endpoint in future]
         const items = [];
@@ -168,7 +189,7 @@ class App extends Component {
         // sort the items
         items.sort(compareByLabel);
 
-        this.setState({allLibraryList: items });
+        this.setState({allLibraryList: items, currentProject:proj, projList:projSearchList });
         // console.log(items);
       })
       .catch(err => {
@@ -185,7 +206,10 @@ class App extends Component {
     const appData = {
       data: this.state.data,
       searchOptions: this.state.searchOptions,
-      allLibraryList:  this.state.allLibraryList
+      allLibraryList:  this.state.allLibraryList,
+      currentProject: this.state.currentProject,
+      projList: this.state.projList
+
     };
 
     const background = isThemeLight
@@ -202,7 +226,7 @@ class App extends Component {
           <BrowserRouter>
             {this.state.data ? (
               <DataProvider value={appData}>
-                <Navbar searchOptions={this.state.allLibraryList}  defaultText="Search by library ID" handle="getLib" />
+                <Navbar currentProj={this.state.currentProject} searchOptions={this.state.allLibraryList}  defaultText="Search by library ID" handle="getLib" />
                 <Switch>
                   <Route exact path="/samples" component={LandingPage} />
                   <Route exact path="/" component={LibrariesPage} />
@@ -210,6 +234,11 @@ class App extends Component {
                     exact
                     path="/factor/:protein_name"
                     component={Sample}
+                  />
+                  <Route
+                    exact
+                    path="/project/:proj_id"
+                    component={LibrariesPage}
                   />
                   <Route
                     exact

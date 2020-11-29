@@ -19,7 +19,7 @@ const styles = theme => ({
       minWidth: 300
     },
     [theme.breakpoints.up("md")]: {
-      minWidth: 500
+      minWidth: 450
     }
   },
   input: {

@@ -55,8 +55,6 @@ class Library extends Component {
   };
 
   loadData = id => () => {
-    var getList = [];
-    var URLList = [];
     let dataURL =
     Config.settings.apiURL + Config.settings.libraryPageEndPoint + "/" + id;
     axios

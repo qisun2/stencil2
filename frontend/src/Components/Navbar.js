@@ -47,7 +47,9 @@ class LandingPage extends React.Component {
                 justify={"space-between"}
               >
                 {/* Filter Menu */}
-                <Grid item sm={"auto"} />
+                <Grid item sm={"auto"} >
+                  Project: {this.props.currentProj}
+                </Grid>
 
                 <Grid item sm={"auto"}>
                 <Search suggestions={this.props.searchOptions} defaultText={this.props.defaultText} handle={this.props.handle} />

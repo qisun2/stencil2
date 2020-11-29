@@ -90,11 +90,15 @@ class SimpleLibrariesPage extends React.Component {
             <Grid
               container
               spacing={2}
-              direction="column"
+              direction="row"
               alignContent="center"
               alignItems="center"
             >
               {/* SearchBar */}
+              <Grid item>
+                <Search suggestions={this.context.projList} defaultText={"Project: " + this.context.currentProject} handle="project" />
+              </Grid>
+
               <Grid item>
                 <Search suggestions={this.context.allLibraryList} defaultText="Browse by library ID" handle="getLib" />
               </Grid>
