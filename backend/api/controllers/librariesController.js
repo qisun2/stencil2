@@ -282,7 +282,7 @@ exports.createNewLibrary = (req, res, next) => {
           doc.save();
         }
   
-        responseMsg["message"] = `Library data is updated`;
+        responseMsg["message"] = "success";
         res.status(202).json(responseMsg);
         return;
 
@@ -312,7 +312,7 @@ exports.createNewLibrary = (req, res, next) => {
           .then(result => {
             res.status(201).json({
               count: 1,
-              message: `The new library ${postedLibId} of project ${postedProjectId} is registerd.`,
+              message: "success",
               sample: {
                 dbId: result._id,
                 libraryId: result.libraryId,
