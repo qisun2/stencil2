@@ -243,6 +243,12 @@ class SearchBar extends React.Component {
     {
       handle ="factor";
     }
+
+    if (handle==="project"){
+      console.log("tttttttttt reload")
+      console.log(window.location.href)
+      window.location = "/project/" + item.value;
+    }
     this.setState({ single: item });
     //Do nothing when the value is null
     if (!item) {
