@@ -10,7 +10,7 @@ import IconButton from "@material-ui/core/IconButton";
 
 // sub component
 import { ResponsiveLine, Line } from "@nivo/line";
-import FullScreenDialog from "./FullScreenDialog";
+import FullScreenDialog from "./FullScreenDialog3";
 
 // component styles
 const styles = {
@@ -37,16 +37,17 @@ function FeatureCompositePlot(props) {
   }
 
   let xValues = props.chartData.Xaxis.split(",");
+  let Yaxis = props.chartData.Yaxis;
   let plotData = [];
   let plotColors = [];
 
-  let yMaxValue = 10;
+  let yMaxValue = 5;
 
   Yaxis.forEach(element => {
-    datasetTitle= element.title;
-    yColor = element.color;
-    yValues=element.data.split(",");
-    lineData = [];
+    let datasetTitle = element.title? element.title : "";
+    let yColor = element.color;
+    let yValues = element.data.split(",");
+    let lineData = [];
 
     if (! yColor.startsWith("#")) {
       yColor = "#" + yColor;
@@ -54,15 +55,21 @@ function FeatureCompositePlot(props) {
     plotColors.push(yColor);
 
     for (let i = 0; i < yValues.length; i++) {
-      if (i % 5 === 0) {
-        if (yValues[i]>yMaxValue){
-          yMaxValue = yValues[i];
+
+        if (i%2 == 0){
+          let x = parseInt(xValues[i]);
+          let y = parseFloat(yValues[i]);
+  
+          if (y>yMaxValue){
+            yMaxValue = y;
+          }
+          lineData.push({
+            x: x,
+            y: y
+          });
         }
-        sData5.push({
-          x: parseInt(xValues[i]),
-          y: parseFloat(yValues[i])
-        });
-      }
+
+
     }
     plotData.push({
       id: datasetTitle,
@@ -117,7 +124,7 @@ function FeatureCompositePlot(props) {
         translateY: 80,
         itemsSpacing: 0,
         itemDirection: "left-to-right",
-        itemWidth: 80,
+        itemWidth: 120,
         itemHeight: 20,
         itemOpacity: 1.0,
         symbolSize: 12,
@@ -160,10 +167,10 @@ function FeatureCompositePlot(props) {
       <Grid container direction="row">
         <Grid item>
           <FullScreenDialog
-            sampleSenseData={sData5}
-            controlSenseData={cData5}
+            plotData ={plotData}
+            colors={plotColors}
             ymin={0}
-            ymax={ymax}
+            ymax={yMaxValue}
             axisTickValues={40}
           />
         </Grid>
@@ -209,7 +216,7 @@ function FeatureCompositePlot(props) {
               translateY: 80,
               itemsSpacing: 0,
               itemDirection: "left-to-right",
-              itemWidth: 80,
+              itemWidth: 120,
               itemHeight: 20,
               itemOpacity: 1.0,
               symbolSize: 12,
