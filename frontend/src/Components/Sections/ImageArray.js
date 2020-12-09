@@ -53,7 +53,7 @@ class ImageArray extends React.Component {
     let showTag = false;
     let count = 0;
 
-    if (this.props.tabtitles.length > 0)
+    if (this.props.tabtitles.length > 1)
     {
       showTag = true;
       for (let t in this.props.tabtitles) {
