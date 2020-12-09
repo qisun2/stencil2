@@ -56,7 +56,7 @@ function FeatureCompositePlot(props) {
 
     for (let i = 0; i < yValues.length; i++) {
 
-        if (i%2 == 0){
+        //if (i%2 == 0){
           let x = parseInt(xValues[i]);
           let y = parseFloat(yValues[i]);
   
@@ -67,7 +67,7 @@ function FeatureCompositePlot(props) {
             x: x,
             y: y
           });
-        }
+        //}
 
 
     }
