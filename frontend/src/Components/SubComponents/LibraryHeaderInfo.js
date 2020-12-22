@@ -26,7 +26,7 @@ function HeaderInfo(props) {
           {/* description */}
           <Typography component="p" variant="body1">
             Group Tag: {props.data.groupTag ? JSON.stringify(props.data.groupTag) : "N/A"} <br />
-            Typte: {props.data.libraryType ?  props.data.libraryType : "N/A"} <br />
+            Type: {props.data.libraryType ?  props.data.libraryType : "N/A"} <br />
           </Typography>
         </Grid>
       </Grid>
