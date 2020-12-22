@@ -294,7 +294,7 @@ exports.createNewLibrary = (req, res, next) => {
         const newLib = new myLib({
           _id: new mongoose.Types.ObjectId(),
           libraryId: postedLibId,
-          sampleId: req.body.sampleID,
+          sampleId: req.body.sampleId,
           projectId: postedProjectId,
           groupTag: req.body.groupTag,
           libraryType: req.body.libraryType,
