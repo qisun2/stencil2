@@ -7,27 +7,32 @@ import Grid from "@material-ui/core/Grid";
 import ImportIcon from "@material-ui/icons/GetApp";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
+import { makeStyles } from '@material-ui/core/styles';
 
 // sub component
 import { ResponsiveLine, Line } from "@nivo/line";
 import FullScreenDialog from "./FullScreenDialog3";
 
 // component styles
-const styles = {
-  card: {
+
+const useStyles = makeStyles({
+  card :props=> ({
     minWidth: 275
-  },
-  chartContainer: {
-    height: 500,
-    width: 600
-  },
-  exportButton: {
+  }),
+  exportButton:props=> ({
     marginLeft: "88%"
-  }
-};
+  }),
+  chartContainer: props=>({
+    height: props.height,
+    width: props.width
+  })
+
+});
 
 function FeatureCompositePlot(props) {
-  const { classes } = props;
+  const  classes  = useStyles(props);
+
+
   var chartData = props.chartData;
   if (chartData["Xaxis"] === undefined ){
     return "The data does not hava a required key Xaxis";
@@ -234,4 +239,4 @@ FeatureCompositePlot.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(FeatureCompositePlot);
+export default FeatureCompositePlot;

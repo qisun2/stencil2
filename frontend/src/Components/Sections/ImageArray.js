@@ -18,9 +18,6 @@ const styles = {
   featureHeatmap: {
     width: 250
   },
-  mainContainer: {
-    overflow: "scroll"
-  },
   sectionTitle: {
     fontSize: 18
   },
@@ -61,6 +58,14 @@ class ImageArray extends React.Component {
         count++;
       }
     }
+    let tablayout = this.props.layout;
+    if (tablayout.length==0) {
+      tablayout = [Object.keys(this.props.data).sort()];
+    }
+
+    let plotsizes = this.props.plotsizes;
+
+    let thisTab = this.props.data[selectedTab];
 
     return (
       <div className={classes.card}>
@@ -90,46 +95,73 @@ class ImageArray extends React.Component {
             </Tabs>
         ) }
 
-
-
           <CardContent className={classes.sectionHolder}>
-            <Grid
-              container
-              spacing={2}
-              direction="row"
-              wrap="nowrap"
-              justify="flex-start"
-              className={classes.mainContainer}
-            >
-              {
-                this.props.data[selectedTab].map(item => {
-                  switch (item.dataType.toLowerCase()) {
-                    case "image":
-                    case "jpg":
-                    case "png": 
-                    return (
-                      <Grid item key={item.stepId}>
-                      <img src={item.URL} alt={item.dataLabel} title={item.dataLabel} />
-                      </Grid>
-                    );
+            {
+              tablayout.map(row=>{
+                return (
+                  <Grid
+                  container
+                  spacing={2}
+                  direction="row"
+                  wrap="nowrap"
+                  justify="flex-start"
+                  className={classes.mainContainer}
+                  >
+                    {
+                      row.map(stepId=>{
+                        if (Array.isArray(stepId)) {
+                        }
+                        else {
+                          let item=thisTab[stepId];
+                          if(item==undefined){
+                            return (
+                              <Grid item key={stepId}>
+                                empty to be filled
+                              </Grid>
+                            )
+  
+                          }
+                          else {
+                            switch (item.dataType.toLowerCase()) {
+                              case "image":
+                              case "jpg":
+                              case "png": 
+                              return (plotsizes[stepId]==undefined)?(
+                              <Grid item key={item.stepId}>
+                                <img src={item.URL} alt={item.dataLabel} title={item.dataLabel}  />
+                                </Grid>):(                      
+                              <Grid item key={item.stepId}>
+                                <img src={item.URL} alt={item.dataLabel} title={item.dataLabel} width={plotsizes[stepId][0]} height={plotsizes[stepId][1]} />
+                                </Grid>)
+                              ;
+                                 
+                              case "lineplot":
+                                return (plotsizes[stepId]==undefined)?(<Grid item key={item.stepId}>
+                                  <LinePlot chartData={item.preLoadData?item.preLoadData.compositePlot: {}} width={600} height={500} />
+                                  </Grid>):(
+                                  <Grid item key={item.stepId}>
+                                  <LinePlot chartData={item.preLoadData?item.preLoadData.compositePlot: {}} width={plotsizes[stepId][0]} height={plotsizes[stepId][1]} />
+                                  </Grid>
+                                );
+                              default:
+                              return(
+                                <Grid item>
+                                  dataType not known: {item.dataType}
+                                </Grid>
+                              )
+                            };  
+                          }
 
-                    case "lineplot":
-                      return (
-                        <Grid item key={item.stepId}>
-                        <LinePlot chartData={item.preLoadData?item.preLoadData.compositePlot: {}} />
-                        </Grid>
-                      );
+                        }
 
-                    default:
-                    return(
-                      <Grid item>
-                        dataType not known: {item.dataType}
-                      </Grid>
-                    )
-                  };
-                })
-              }
-            </Grid>
+
+
+                      })
+                    }
+                  </Grid>
+                )
+              })
+            }
           </CardContent>
         </Paper>
       </div>

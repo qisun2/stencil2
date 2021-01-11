@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import CardContent from "@material-ui/core/CardContent";
 import { Grid } from "@material-ui/core";
-
+import Config from "../Config";
 import ImageArray from "./Sections/ImageArray";
 // Sectional components
 
@@ -86,11 +86,11 @@ class LayoutList extends React.Component {
 
       if (! (item.tabId in layoutIdToData[item.layoutId]))
       {
-        layoutIdToData[item.layoutId][item.tabId] = [];
+        layoutIdToData[item.layoutId][item.tabId] = {};
         layoutTabs[item.layoutId][item.tabId] = item.tabTitle? item.tabTitle: item.tabId;
       }
 
-      layoutIdToData[item.layoutId][item.tabId].push(item);
+      layoutIdToData[item.layoutId][item.tabId][item.stepId]=item;
     }
 
     for (let layoutId of Object.keys(layoutIdToTitle).sort()) 
@@ -99,10 +99,33 @@ class LayoutList extends React.Component {
       let tabTitles = [];
       let tabData = [];
 
+      let layoutFormat= {};
+
+      if (layoutId in Config.layoutFormat) {
+        layoutFormat = Config.layoutFormat[layoutId];
+      }
+
+      let layout = [];
+      if ("layOut" in layoutFormat){
+        layout= layoutFormat["layOut"]
+      }
+
+      let plotsizes = {};
+      if ("plotSizes" in layoutFormat){
+        plotsizes= layoutFormat["plotSizes"]
+      }
+
+      let plottitles = {};
+      if ("plotTitles" in layoutFormat){
+        plottitles= layoutFormat["plotTitles"]
+      }
+      
       for (let myTabId of Object.keys(layoutTabs[layoutId]).sort())
       {
         tabTitles.push(layoutTabs[layoutId][myTabId]);
-        tabData.push(layoutIdToData[layoutId][myTabId].sort((x, y) => {return (x["stepId"] > y["stepId"])?1:-1}));
+        //let thisTab = layoutIdToData[layoutId][myTabId].sort((x, y) => {return (x["stepId"] > y["stepId"])?1:-1})
+        let thisTab = layoutIdToData[layoutId][myTabId];
+        tabData.push(thisTab);       
       }
       content.push(
         <Grid item key={layoutId}>
@@ -111,6 +134,9 @@ class LayoutList extends React.Component {
           title={layoutTitle}
           tabtitles={tabTitles}
           data={tabData}
+          layout={layout}
+          plotsizes = {plotsizes}
+          plottitles = {plottitles}
         />
         </Grid>
       );
