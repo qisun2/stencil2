@@ -10,21 +10,14 @@ const settings = {
 
 const layoutFormat = {
   Motif_Analysis: {
-    layOut: [[0,1],[2]],
+    layOut: [[0,1], [[2,3]]],
     plotSizes: {
-      0:[600,500],
+      0:[400,300],
+      1:[200,300],
       2:[398,147],
+      3:[398,147],
     },
-    plotTitles:{}
-  },
-
-  Motif_Analysis2: {
-    layOut: [[0,1],[2, [3,4]]],
-    plotSizes: {
-      0:[600,500],
-      2:[398,147],
-    },
-    plotTitles: {3:"Forward", 4:"Reverse"}
+    plotTitles: {2:"Forward", 3:"Reverse"}
   },
 
 };

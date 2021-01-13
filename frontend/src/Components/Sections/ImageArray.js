@@ -9,7 +9,8 @@ import Paper from "@material-ui/core/Paper";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import LinePlot from "../SubComponents/LinePlot3";
-
+import blue from "@material-ui/core/colors/blue";
+import Radio from "@material-ui/core/Radio";
 
 const styles = {
   card: {
@@ -23,7 +24,8 @@ const styles = {
   },
   internalHeatmap: {
     width: 230
-  }
+  },
+
 };
 
 class ImageArray extends React.Component {
@@ -60,13 +62,21 @@ class ImageArray extends React.Component {
     }
     let tablayout = this.props.layout;
     if (tablayout.length==0) {
-      tablayout = [Object.keys(this.props.data).sort()];
+      tablayout = [Object.keys(this.props.data[selectedTab]).sort()];
     }
 
     let plotsizes = this.props.plotsizes;
 
+    let plottitle = this.props.plottitles;
+
     let thisTab = this.props.data[selectedTab];
 
+    let handleRadioChange = event => {
+      this.setState({ motifLogo: event.target.value });
+    };
+    if (this.state.motifLogo === undefined){
+      this.state.motifLogo ="radioState_1";
+    } 
     return (
       <div className={classes.card}>
         {/* Header */}
@@ -110,13 +120,67 @@ class ImageArray extends React.Component {
                     {
                       row.map(stepId=>{
                         if (Array.isArray(stepId)) {
+
+                          let url1 = (thisTab[stepId[0]])? (thisTab[stepId[0]].URL):("../na.png")
+                          let url2 = (thisTab[stepId[1]])? (thisTab[stepId[1]].URL):("../na.png")
+
+                          return (
+                            <Grid item>
+                            <Grid
+                              container
+                              spacing={3}
+                              direction="row"
+                              justify="space-evenly"
+                            >
+                              <Grid item>
+                                <Radio
+                                  checked={this.state.motifLogo === "radioState_1"}
+                                  onChange={handleRadioChange}
+                                  value="radioState_1"
+                                  name="radioButton_1"
+                                  color="default"
+                                />
+                                {plottitle[stepId[0]]}
+                              </Grid>
+                              <Grid item>
+                                <Radio
+                                  checked={this.state.motifLogo === "radioState_2"}
+                                  onChange={handleRadioChange}
+                                  value="radioState_2"
+                                  name="radioButton_2"
+                                  color="default"
+                                />
+                                {plottitle[stepId[1]]}
+                              </Grid>
+                            </Grid>
+                            {        this.state.motifLogo === "radioState_1" ? (
+                                    <img
+                                      src={url1}
+                                      alt="radio0"
+                                      width={plotsizes[stepId[0]][0]} 
+                                      height={plotsizes[stepId[1]][1]}
+                                    />
+                                  ) : (
+                                    <img
+                                      src={url2}
+                                      alt="radio1"
+                                      width={plotsizes[stepId[0]][0]} 
+                                      height={plotsizes[stepId[1]][1]}
+                                    />
+                                  )}
+                          </Grid>
+                          )
                         }
                         else {
                           let item=thisTab[stepId];
                           if(item==undefined){
                             return (
                               <Grid item key={stepId}>
-                                empty to be filled
+                                    <img
+                                      src={"../na.png"}
+                                      width={plotsizes[stepId][0]} 
+                                      height={plotsizes[stepId][1]}
+                                    />
                               </Grid>
                             )
   
