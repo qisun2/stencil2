@@ -9,7 +9,6 @@ import Paper from "@material-ui/core/Paper";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import LinePlot from "../SubComponents/LinePlot3";
-import blue from "@material-ui/core/colors/blue";
 import Radio from "@material-ui/core/Radio";
 
 const styles = {
@@ -70,13 +69,7 @@ class ImageArray extends React.Component {
     let plottitle = this.props.plottitles;
 
     let thisTab = this.props.data[selectedTab];
-
-    let handleRadioChange = event => {
-      this.setState({ motifLogo: event.target.value });
-    };
-    if (this.state.motifLogo === undefined){
-      this.state.motifLogo ="radioState_1";
-    } 
+    let radioButtonGroupIndex = 0;
     return (
       <div className={classes.card}>
         {/* Header */}
@@ -120,9 +113,19 @@ class ImageArray extends React.Component {
                     {
                       row.map(stepId=>{
                         if (Array.isArray(stepId)) {
+                          radioButtonGroupIndex = radioButtonGroupIndex +1;
+                          let rgroup = "radioGroup" + String(radioButtonGroupIndex)
+                          let handleRadioChange = event => {
+                            this.setState({ [rgroup]: event.target.value });
+                          };
+                          if (this.state[rgroup] === undefined){
+                            this.state[rgroup] =stepId[0];
+                          } 
 
-                          let url1 = (thisTab[stepId[0]])? (thisTab[stepId[0]].URL):("../na.png")
-                          let url2 = (thisTab[stepId[1]])? (thisTab[stepId[1]].URL):("../na.png")
+                          let urlArray = {};
+                          for (var ss of stepId){
+                            urlArray[ss] = (thisTab[ss])? (thisTab[ss].URL):("../na.png")
+                          }
 
                           return (
                             <Grid item>
@@ -132,42 +135,29 @@ class ImageArray extends React.Component {
                               direction="row"
                               justify="space-evenly"
                             >
-                              <Grid item>
-                                <Radio
-                                  checked={this.state.motifLogo === "radioState_1"}
-                                  onChange={handleRadioChange}
-                                  value="radioState_1"
-                                  name="radioButton_1"
-                                  color="default"
-                                />
-                                {plottitle[stepId[0]]}
-                              </Grid>
-                              <Grid item>
-                                <Radio
-                                  checked={this.state.motifLogo === "radioState_2"}
-                                  onChange={handleRadioChange}
-                                  value="radioState_2"
-                                  name="radioButton_2"
-                                  color="default"
-                                />
-                                {plottitle[stepId[1]]}
-                              </Grid>
+                              {
+                                stepId.map(stepIndex=>{
+                                  return (
+                                    <Grid item>
+                                      <Radio
+                                        checked={this.state[rgroup] == stepIndex}
+                                        onChange={handleRadioChange}
+                                        value= {stepIndex}
+                                        name= {rgroup}
+                                        color="default"
+                                      />
+                                      {plottitle[stepIndex]}
+                                    </Grid>
+                                  )
+                                } )
+                              }
                             </Grid>
-                            {        this.state.motifLogo === "radioState_1" ? (
+                            {       
                                     <img
-                                      src={url1}
-                                      alt="radio0"
-                                      width={plotsizes[stepId[0]][0]} 
-                                      height={plotsizes[stepId[1]][1]}
-                                    />
-                                  ) : (
-                                    <img
-                                      src={url2}
-                                      alt="radio1"
-                                      width={plotsizes[stepId[0]][0]} 
-                                      height={plotsizes[stepId[1]][1]}
-                                    />
-                                  )}
+                                      src={urlArray[this.state[rgroup]]}
+                                      width={plotsizes[this.state[rgroup]][0]} 
+                                      height={plotsizes[this.state[rgroup]][1]}
+                                    />}
                           </Grid>
                           )
                         }
