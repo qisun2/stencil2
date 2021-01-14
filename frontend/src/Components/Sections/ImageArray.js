@@ -41,7 +41,7 @@ class ImageArray extends React.Component {
   };
   
 
-
+ 
   render() {
     const { classes } = this.props;
     const { selectedTab } = this.state;
@@ -70,6 +70,57 @@ class ImageArray extends React.Component {
 
     let thisTab = this.props.data[selectedTab];
     let radioButtonGroupIndex = 0;
+
+    //function for generating plot
+    let Plot  =  (props) => {
+      let item=props.imgObj;
+      let sizes = props.sizes;
+      let stepId = (item!==undefined)?(item.stepId):("X");
+      if(item==undefined){
+        return (
+          <Grid item key={stepId}>
+                <img
+                  src={"../na.png"}
+                  width={sizes[0]} 
+                  height={sizes[1]}
+                />
+          </Grid>
+        )
+    
+      }
+      else {
+        switch (item.dataType.toLowerCase()) {
+          case "image":
+          case "jpg":
+          case "png": 
+          return (sizes==undefined)?(
+          <Grid item key={stepId}>
+            <img src={item.URL} alt={item.dataLabel} title={item.dataLabel}  />
+            </Grid>):(                      
+          <Grid item key={stepId}>
+            <img src={item.URL} alt={item.dataLabel} title={item.dataLabel} width={sizes[0]} height={sizes[1]} />
+            </Grid>)
+          ;
+             
+          case "lineplot":
+            return (sizes==undefined)?(<Grid item key={stepId}>
+              <LinePlot chartData={item.preLoadData?item.preLoadData.compositePlot: {}} width={600} height={500} />
+              </Grid>):(
+              <Grid item key={stepId}>
+              <LinePlot chartData={item.preLoadData?item.preLoadData.compositePlot: {}} width={sizes[0]} height={sizes[1]} />
+              </Grid>
+            );
+          default:
+          return(
+            <Grid item>
+              dataType not known: {item.dataType}
+            </Grid>
+          )
+        };  
+      }
+    }
+    // end of show plot function
+
     return (
       <div className={classes.card}>
         {/* Header */}
@@ -84,7 +135,9 @@ class ImageArray extends React.Component {
 
         <Paper>
 
-        { showTag && (
+        {
+        //select tab
+         showTag && (
             <Tabs
               value={selectedTab}
               onChange={this.handleChange}
@@ -100,6 +153,7 @@ class ImageArray extends React.Component {
 
           <CardContent className={classes.sectionHolder}>
             {
+              //show the layout by rows
               tablayout.map(row=>{
                 return (
                   <Grid
@@ -118,14 +172,12 @@ class ImageArray extends React.Component {
                           let handleRadioChange = event => {
                             this.setState({ [rgroup]: event.target.value });
                           };
-                          if (this.state[rgroup] === undefined){
-                            this.state[rgroup] =stepId[0];
-                          } 
 
-                          let urlArray = {};
-                          for (var ss of stepId){
-                            urlArray[ss] = (thisTab[ss])? (thisTab[ss].URL):("../na.png")
-                          }
+                          let seletedStepId = this.state[rgroup];
+
+                          if (seletedStepId === undefined){
+                            seletedStepId =stepId[0];
+                          } 
 
                           return (
                             <Grid item>
@@ -140,7 +192,7 @@ class ImageArray extends React.Component {
                                   return (
                                     <Grid item>
                                       <Radio
-                                        checked={this.state[rgroup] == stepIndex}
+                                        checked={seletedStepId == stepIndex}
                                         onChange={handleRadioChange}
                                         value= {stepIndex}
                                         name= {rgroup}
@@ -152,64 +204,17 @@ class ImageArray extends React.Component {
                                 } )
                               }
                             </Grid>
-                            {       
-                                    <img
-                                      src={urlArray[this.state[rgroup]]}
-                                      width={plotsizes[this.state[rgroup]][0]} 
-                                      height={plotsizes[this.state[rgroup]][1]}
-                                    />}
+                            {   
+                            <Plot imgObj={thisTab[seletedStepId]} sizes={plotsizes[seletedStepId]} />    
+                                }
                           </Grid>
                           )
                         }
                         else {
-                          let item=thisTab[stepId];
-                          if(item==undefined){
-                            return (
-                              <Grid item key={stepId}>
-                                    <img
-                                      src={"../na.png"}
-                                      width={plotsizes[stepId][0]} 
-                                      height={plotsizes[stepId][1]}
-                                    />
-                              </Grid>
-                            )
-  
-                          }
-                          else {
-                            switch (item.dataType.toLowerCase()) {
-                              case "image":
-                              case "jpg":
-                              case "png": 
-                              return (plotsizes[stepId]==undefined)?(
-                              <Grid item key={item.stepId}>
-                                <img src={item.URL} alt={item.dataLabel} title={item.dataLabel}  />
-                                </Grid>):(                      
-                              <Grid item key={item.stepId}>
-                                <img src={item.URL} alt={item.dataLabel} title={item.dataLabel} width={plotsizes[stepId][0]} height={plotsizes[stepId][1]} />
-                                </Grid>)
-                              ;
-                                 
-                              case "lineplot":
-                                return (plotsizes[stepId]==undefined)?(<Grid item key={item.stepId}>
-                                  <LinePlot chartData={item.preLoadData?item.preLoadData.compositePlot: {}} width={600} height={500} />
-                                  </Grid>):(
-                                  <Grid item key={item.stepId}>
-                                  <LinePlot chartData={item.preLoadData?item.preLoadData.compositePlot: {}} width={plotsizes[stepId][0]} height={plotsizes[stepId][1]} />
-                                  </Grid>
-                                );
-                              default:
-                              return(
-                                <Grid item>
-                                  dataType not known: {item.dataType}
-                                </Grid>
-                              )
-                            };  
-                          }
-
+                          return (
+                            <Plot imgObj={thisTab[stepId]} sizes={plotsizes[stepId]} />
+                          )
                         }
-
-
-
                       })
                     }
                   </Grid>
