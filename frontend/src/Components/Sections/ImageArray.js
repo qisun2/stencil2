@@ -40,8 +40,107 @@ class ImageArray extends React.Component {
     });
   };
   
-
+   //function for generating plot
+   Plot  =  (props) => {
+    let item=props.imgObj;
+    let sizes = props.sizes;
+    let stepId = (item!==undefined)?(item.stepId):("X");
+    if(item==undefined){
+      return (
+        <Grid item key={stepId}>
+              <img
+                src={"../na.png"}
+                width={sizes[0]} 
+                height={sizes[1]}
+              />
+        </Grid>
+      )
+  
+    }
+    else {
+      switch (item.dataType.toLowerCase()) {
+        case "image":
+        case "jpg":
+        case "png": 
+        return (sizes==undefined)?(
+        <Grid item key={stepId}>
+          <img src={item.URL} alt={item.dataLabel} title={item.dataLabel}  />
+          </Grid>):(                      
+        <Grid item key={stepId}>
+          <img src={item.URL} alt={item.dataLabel} title={item.dataLabel} width={sizes[0]} height={sizes[1]} />
+          </Grid>)
+        ;
+           
+        case "lineplot":
+          return (sizes==undefined)?(<Grid item key={stepId}>
+            <LinePlot chartData={item.preLoadData?item.preLoadData.compositePlot: {}} width={600} height={500} />
+            </Grid>):(
+            <Grid item key={stepId}>
+            <LinePlot chartData={item.preLoadData?item.preLoadData.compositePlot: {}} width={sizes[0]} height={sizes[1]} />
+            </Grid>
+          );
+        default:
+        return(
+          <Grid item>
+            dataType not known: {item.dataType}
+          </Grid>
+        )
+      };  
+    }
+  }
+  // end of show plot function
  
+  RadioGroup = (props) => {
+    let radioButtonGroupIndex = props.radioButtonGroupIndex;
+    let plottitle = props.plottitle;
+    let stepId = props.stepId;
+    let thisTab= props.thisTab;
+    let plotsizes = props.plotsizes;
+    
+
+    let rgroup = "radioGroup" + String(radioButtonGroupIndex)
+    let handleRadioChange = event => {
+      this.setState({ [rgroup]: event.target.value });
+    };
+
+    let seletedStepId = this.state[rgroup];
+
+    if (seletedStepId === undefined){
+      seletedStepId =stepId[0];
+    } 
+
+    return (
+      <Grid item>
+      <Grid
+        container
+        spacing={3}
+        direction="row"
+        justify="space-evenly"
+      >
+        {
+          stepId.map(stepIndex=>{
+            return (
+              <Grid item>
+                <Radio
+                  checked={seletedStepId == stepIndex}
+                  onChange={handleRadioChange}
+                  value= {stepIndex}
+                  name= {rgroup}
+                  color="default"
+                />
+                {plottitle[stepIndex]}
+              </Grid>
+            )
+          } )
+        }
+      </Grid>
+      {   
+      <this.Plot imgObj={thisTab[seletedStepId]} sizes={plotsizes[seletedStepId]} />    
+          }
+    </Grid>
+    )
+  }
+
   render() {
     const { classes } = this.props;
     const { selectedTab } = this.state;
@@ -50,6 +149,7 @@ class ImageArray extends React.Component {
     let tabnames = [];
     let showTag = false;
     let count = 0;
+    let direction = this.props.direction;
 
     if (this.props.tabtitles.length > 1)
     {
@@ -71,55 +171,7 @@ class ImageArray extends React.Component {
     let thisTab = this.props.data[selectedTab];
     let radioButtonGroupIndex = 0;
 
-    //function for generating plot
-    let Plot  =  (props) => {
-      let item=props.imgObj;
-      let sizes = props.sizes;
-      let stepId = (item!==undefined)?(item.stepId):("X");
-      if(item==undefined){
-        return (
-          <Grid item key={stepId}>
-                <img
-                  src={"../na.png"}
-                  width={sizes[0]} 
-                  height={sizes[1]}
-                />
-          </Grid>
-        )
-    
-      }
-      else {
-        switch (item.dataType.toLowerCase()) {
-          case "image":
-          case "jpg":
-          case "png": 
-          return (sizes==undefined)?(
-          <Grid item key={stepId}>
-            <img src={item.URL} alt={item.dataLabel} title={item.dataLabel}  />
-            </Grid>):(                      
-          <Grid item key={stepId}>
-            <img src={item.URL} alt={item.dataLabel} title={item.dataLabel} width={sizes[0]} height={sizes[1]} />
-            </Grid>)
-          ;
-             
-          case "lineplot":
-            return (sizes==undefined)?(<Grid item key={stepId}>
-              <LinePlot chartData={item.preLoadData?item.preLoadData.compositePlot: {}} width={600} height={500} />
-              </Grid>):(
-              <Grid item key={stepId}>
-              <LinePlot chartData={item.preLoadData?item.preLoadData.compositePlot: {}} width={sizes[0]} height={sizes[1]} />
-              </Grid>
-            );
-          default:
-          return(
-            <Grid item>
-              dataType not known: {item.dataType}
-            </Grid>
-          )
-        };  
-      }
-    }
-    // end of show plot function
+ 
 
     return (
       <div className={classes.card}>
@@ -150,8 +202,9 @@ class ImageArray extends React.Component {
               {tabnames}
             </Tabs>
         ) }
-
-          <CardContent className={classes.sectionHolder}>
+        {
+          (direction === "row")? (
+            <CardContent className={classes.sectionHolder}>
             {
               //show the layout by rows
               tablayout.map(row=>{
@@ -168,51 +221,13 @@ class ImageArray extends React.Component {
                       row.map(stepId=>{
                         if (Array.isArray(stepId)) {
                           radioButtonGroupIndex = radioButtonGroupIndex +1;
-                          let rgroup = "radioGroup" + String(radioButtonGroupIndex)
-                          let handleRadioChange = event => {
-                            this.setState({ [rgroup]: event.target.value });
-                          };
-
-                          let seletedStepId = this.state[rgroup];
-
-                          if (seletedStepId === undefined){
-                            seletedStepId =stepId[0];
-                          } 
-
                           return (
-                            <Grid item>
-                            <Grid
-                              container
-                              spacing={3}
-                              direction="row"
-                              justify="space-evenly"
-                            >
-                              {
-                                stepId.map(stepIndex=>{
-                                  return (
-                                    <Grid item>
-                                      <Radio
-                                        checked={seletedStepId == stepIndex}
-                                        onChange={handleRadioChange}
-                                        value= {stepIndex}
-                                        name= {rgroup}
-                                        color="default"
-                                      />
-                                      {plottitle[stepIndex]}
-                                    </Grid>
-                                  )
-                                } )
-                              }
-                            </Grid>
-                            {   
-                            <Plot imgObj={thisTab[seletedStepId]} sizes={plotsizes[seletedStepId]} />    
-                                }
-                          </Grid>
+                            <this.RadioGroup radioButtonGroupIndex={radioButtonGroupIndex}  plottitle={plottitle} stepId={stepId} thisTab={thisTab} plotsizes={plotsizes} />
                           )
                         }
                         else {
                           return (
-                            <Plot imgObj={thisTab[stepId]} sizes={plotsizes[stepId]} />
+                            <this.Plot imgObj={thisTab[stepId]} sizes={plotsizes[stepId]} />
                           )
                         }
                       })
@@ -222,6 +237,52 @@ class ImageArray extends React.Component {
               })
             }
           </CardContent>
+          ):(
+            <CardContent className={classes.sectionHolder}>
+              <Grid
+                  container
+                  direction="row"
+                  spacing={"8"}
+                  justify="flex-start"
+                  >
+             {
+              //show the layout by column
+              tablayout.map(row=>{
+                return (
+                  <Grid item>
+                  <Grid
+                  container
+                  spacing={2}
+                  direction="column"
+                  wrap="nowrap"
+                  justify="flex-start"
+                  className={classes.mainContainer}
+                  >
+                    {
+                      row.map(stepId=>{
+                        if (Array.isArray(stepId)) {
+                          radioButtonGroupIndex = radioButtonGroupIndex +1;
+                          return (
+                            <this.RadioGroup radioButtonGroupIndex={radioButtonGroupIndex}  plottitle={plottitle} stepId={stepId} thisTab={thisTab} plotsizes={plotsizes} />
+                          )
+                        }
+                        else {
+                          return (
+                            <this.Plot imgObj={thisTab[stepId]} sizes={plotsizes[stepId]} />
+                          )
+                        }
+                      })
+                    }
+                  </Grid>
+                  </Grid>
+                )
+              })
+            }
+              </Grid>
+            </CardContent>
+          )
+        }
+
         </Paper>
       </div>
     );

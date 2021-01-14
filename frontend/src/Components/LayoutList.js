@@ -119,6 +119,12 @@ class LayoutList extends React.Component {
       if ("plotTitles" in layoutFormat){
         plottitles= layoutFormat["plotTitles"]
       }
+
+      let direction = "row";
+      if ("direction" in layoutFormat){
+        direction= layoutFormat["direction"]
+      }
+
       
       for (let myTabId of Object.keys(layoutTabs[layoutId]).sort())
       {
@@ -137,6 +143,8 @@ class LayoutList extends React.Component {
           layout={layout}
           plotsizes = {plotsizes}
           plottitles = {plottitles}
+          direction = {direction}
+
         />
         </Grid>
       );

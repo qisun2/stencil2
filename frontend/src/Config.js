@@ -10,10 +10,11 @@ const settings = {
 
 const layoutFormat = {
   Motif_Analysis: {
-    layOut: [[0,1], [[2,3]]],
+    layOut: [ [0,[2,3]], [1]],
+    direction: "column",
     plotSizes: {
       0:[400,300],
-      1:[200,300],
+      1:[200,500],
       2:[398,147],
       3:[398,147],
     },
