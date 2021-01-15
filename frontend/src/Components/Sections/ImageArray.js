@@ -203,7 +203,7 @@ class ImageArray extends React.Component {
             </Tabs>
         ) }
         {
-          (direction === "row")? (
+          (direction.toLowerCase() === "row")? (
             <CardContent className={classes.sectionHolder}>
             {
               //show the layout by rows
