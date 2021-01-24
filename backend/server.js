@@ -11,7 +11,7 @@ var server = null;
 
 if (HTTPsMode==="true") {
   console.log("Start backend server with HTTPS.");
-  var http =require("https");
+  var https =require("https");
   server = https.createServer({
     key:fs.readFileSync(process.env.HTTPSKEY),
     cert: fs.readFileSync(process.env.HTTPSCERT)
