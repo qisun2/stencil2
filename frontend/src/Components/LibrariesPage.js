@@ -5,6 +5,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
+import Config from "../Config";
 
 
 // Sub Components
@@ -75,7 +76,7 @@ class SimpleLibrariesPage extends React.Component {
             <div className={classes.jumbotron}>
               <div className={classes.container}>
                 <Typography variant="h2" gutterBottom>
-                  Sample libraries
+                {this.context.uid?"Sample libraries":<a href={Config.settings.rootURL}>click to login</a>}
                 </Typography>
 
                 <Typography variant="subtitle1" gutterBottom>
@@ -83,7 +84,7 @@ class SimpleLibrariesPage extends React.Component {
                 </Typography>
                 <Divider />
                 <Typography variant="caption" component="p" gutterBottom>
-                  one line description
+                  User: {this.context.uid}
                 </Typography>
               </div>
             </div>
@@ -96,11 +97,11 @@ class SimpleLibrariesPage extends React.Component {
             >
               {/* SearchBar */}
               <Grid item>
-                <Search suggestions={this.context.projList} defaultText={"Project: " + this.context.currentProject} handle="project" />
+                <Search suggestions={this.context.projList} defaultText={"Project: " + this.context.currentProject} handle="project"  uid={this.context.uid} token={this.context.token} />
               </Grid>
 
               <Grid item>
-                <Search suggestions={this.context.allLibraryList} defaultText="Browse by library ID" handle="getLib" />
+                <Search suggestions={this.context.allLibraryList} defaultText="Browse by library ID" handle="getLib"  uid={this.context.uid} token={this.context.token} />
               </Grid>
 
               <Grid item></Grid>

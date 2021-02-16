@@ -238,7 +238,7 @@ class SearchBar extends React.Component {
   };
 
   handleChangeSingle = item => {
-    var { handle} = this.props;
+    var { handle, uid, token} = this.props;
     if (handle === undefined)
     {
       handle ="factor";
@@ -247,14 +247,14 @@ class SearchBar extends React.Component {
     if (handle==="project"){
       console.log("tttttttttt reload")
       console.log(window.location.href)
-      window.location = "/project/" + item.value;
+      window.location = "/project/" + item.value + "?" +  token + "&" + uid ;
     }
     this.setState({ single: item });
     //Do nothing when the value is null
     if (!item) {
       console.log(item);
     } else {
-      this.props.history.push("/" + handle + "/" + item.value);
+      this.props.history.push("/" + handle + "/" + item.value + "&" +  token + "&" + uid);
     }
   };
 

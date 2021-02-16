@@ -131,9 +131,17 @@ class App extends Component {
 
     const url = window.location.href;
     let proj = null;
-    const found = url.match("project/(.+)$");
+    const found = url.match("project/([^?]+)");
     if (found){
       proj = found[1];
+    }
+
+    let tokenstr = null;
+    let uidstr = null;
+    const found2 = url.match("\\?(\\w+)&(\\w+)$");
+    if (found2){
+      tokenstr = found2[1];
+      uidstr = found2[2];
     }
 
     axios
@@ -161,14 +169,16 @@ class App extends Component {
       });
 
     let proj2Libs = {};
+    let backendURL = apiBaseURL + libraryEndPoint + "/" + tokenstr + "&" + uidstr;
+    console.log("URL: " + backendURL);
     axios
-      .get(apiBaseURL + libraryEndPoint)
+      .get(backendURL)
       .then(res => {
         res.data.libraries.forEach(library => {
           if (! proj2Libs.hasOwnProperty(library.projectId)){
             proj2Libs[library.projectId]= [];
           }
-          proj2Libs[library.projectId].push ({ "dbid": library.dbId, "libid": library.libraryId });
+          proj2Libs[library.projectId].push ({ "dbid": library.dbId, "libid": library.libraryId});
         })
 
         let theProjList = Object.keys(proj2Libs).sort();
@@ -189,7 +199,7 @@ class App extends Component {
         // sort the items
         items.sort(compareByLabel);
 
-        this.setState({allLibraryList: items, currentProject:proj, projList:projSearchList });
+        this.setState({allLibraryList: items, currentProject:proj, projList:projSearchList, uid: uidstr, token:tokenstr });
         // console.log(items);
       })
       .catch(err => {
@@ -204,6 +214,8 @@ class App extends Component {
     // const { classes } = this.props;
 
     const appData = {
+      uid: this.state.uid,
+      token: this.state.token,
       data: this.state.data,
       searchOptions: this.state.searchOptions,
       allLibraryList:  this.state.allLibraryList,
@@ -226,7 +238,7 @@ class App extends Component {
           <BrowserRouter>
             {this.state.data ? (
               <DataProvider value={appData}>
-                <Navbar currentProj={this.state.currentProject} searchOptions={this.state.allLibraryList}  defaultText="Search by library ID" handle="getLib" />
+                <Navbar currentProj={this.state.currentProject} searchOptions={this.state.allLibraryList}  defaultText="Search by library ID" handle="getLib" uid={this.state.uid} token={this.state.token} />
                 <Switch>
                   <Route exact path="/samples" component={LandingPage} />
                   <Route exact path="/" component={LibrariesPage} />

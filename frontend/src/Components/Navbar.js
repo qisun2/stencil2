@@ -52,7 +52,7 @@ class LandingPage extends React.Component {
                 </Grid>
 
                 <Grid item sm={"auto"}>
-                <Search suggestions={this.props.searchOptions} defaultText={this.props.defaultText} handle={this.props.handle} />
+                <Search suggestions={this.props.searchOptions} defaultText={this.props.defaultText} handle={this.props.handle} uid={this.props.uid} token={this.props.token} />
                 </Grid>
               </Grid>
             </Grid>
