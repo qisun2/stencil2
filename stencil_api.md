@@ -134,7 +134,7 @@ libraryData Object (This object is only returned when query for individual recor
 + Request (application/json)
 ```
 {
-	"token": "ab0d143",
+	"token": "aaaaa",
 	"submitter": "ab23",
     "libraryId": "1",
     "sampleId": "1",
