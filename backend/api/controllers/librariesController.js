@@ -8,11 +8,31 @@ require("dotenv").config();
 // requiring the library model
 const myLib = require("../models/libraryModel");
 
+//verify token
+const verify = (token, uid) =>{
+
+  console.log(token);
+  if (token === process.env.TOKEN) {
+    console.log("token verified");
+    return "YES";
+  }
+  else{
+    console.log("not verified");
+    return "NO"
+  }
+  
+}
+
 // API FUNCTIONS
 
 exports.getAllLibraryMetaInfo = (req, res, next) => {
   console.log("get all");
-  myLib.find()
+  let token = req.params.token;
+  let uid = req.params.uid;
+  let verified = verify(token, uid);
+
+  if (verified === "YES"){
+    myLib.find()
     .exec()
     .then(docs => {
       returnMessage = "";
@@ -41,6 +61,18 @@ exports.getAllLibraryMetaInfo = (req, res, next) => {
       console.log(err);
       res.status(500).json({ error: err });
     });
+
+  }
+  else
+  {
+    const response = {
+      count: 0,
+      message: "denied",
+      libraries: {}
+    };
+    res.status(200).json(response);
+  }
+
 };
 
 
@@ -50,7 +82,9 @@ exports.queryLibraryDataById = (req, res, next) => {
     message: "",
     libraries: []
   };
-  queryId = req.params.dbid;
+  let queryId = req.params.dbid;
+  let uid = req.params.uid;
+  let token = req.params.token;
   console.log("query the db");
   console.log(queryId);
   myLib.findOne({'_id': queryId})
