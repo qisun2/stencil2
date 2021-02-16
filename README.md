@@ -111,6 +111,6 @@ HTTPSCERT = "/home/xxxxx/fullchain.pem" //path of https certificate
 
 5. Open browser
 
-   backend url:  http://stencil.biohpc.cornell.edu:8081
+   backend url:  http://stencil.biohpc.cornell.edu:8081/libraries/TOKEN&UID
 
-   frontend url: http://stencil.biohpc.cornell.edu:3000
+   frontend url: http://stencil.biohpc.cornell.edu:3000/?TOKEN&UID
