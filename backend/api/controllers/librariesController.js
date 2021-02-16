@@ -233,7 +233,15 @@ exports.createNewLibrary = (req, res, next) => {
   const postedLibId = req.body.libraryId;
   const postedProjectId = req.body.projectId;
   const postedlibraryData = req.body.libraryData;
-  const submittedBy = "";
+  const postedToken = req.body.token;
+  const submittedBy = req.body.submitter;
+
+  let verified = verify(postedToken, submittedBy);
+  if (verified === "NO"){
+    responseMsg["message"] = "The token denied!";
+    res.status(500).json(responseMsg);
+    return;
+  }
 
   var ccc= 0;
   var libraryDataNameDict  = {};

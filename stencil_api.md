@@ -81,6 +81,8 @@ Call to register the event of a library being taken. Library ID is assigned as a
 
 |Field|Type|Description|
 |---|---|---|
+|token|string (required)|A string authenticate the post request|
+|submitter|string (required)|User id of the submitter|
 |libraryId|string (required)| User defined  ID of the library which should be unique within a project; |
 |sampleId|string| User defined ID of the sample. If not specified, it will copy the value from libraryId. |
 |projectId|string (required)|User defined ID of a project.|
@@ -132,6 +134,8 @@ libraryData Object (This object is only returned when query for individual recor
 + Request (application/json)
 ```
 {
+	"token": "ab0d143",
+	"submitter": "ab23",
     "libraryId": "1",
     "sampleId": "1",
     "libraryDescription": "",
