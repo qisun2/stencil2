@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 // Material ui styling
 import { withStyles } from "@material-ui/core/styles";
@@ -15,6 +15,7 @@ import Navbar from "./Components/Navbar";
 import ExploreGrid from "./Components/ExploreGrid";
 import LandingPage from "./Components/LandingPage";
 import LibrariesPage from "./Components/LibrariesPage";
+import LoginPage from "./Components/LoginPage";
 import Sample from "./Components/Sample";
 import Library from "./Components/showLibrary"
 import Help from "./Components/Help";
@@ -115,12 +116,14 @@ function compareByLabel(a, b) {
 
 class App extends Component {
   state = {
+    uid : "",
     isThemeLight: true,
     searchOptions: [],
     allLibraryList:[],
     data: null,
     currentProject: null,
-    projList: null
+    projList: null,
+    login:false
   };
 
   componentDidMount() {
@@ -136,13 +139,7 @@ class App extends Component {
       proj = found[1];
     }
 
-    let tokenstr = null;
-    let uidstr = null;
-    const found2 = url.match("\\?(\\w+)&(\\w+)$");
-    if (found2){
-      tokenstr = found2[1];
-      uidstr = found2[2];
-    }
+
 
     axios
       .get(apiBaseURL + sampleEndPint)
@@ -169,38 +166,49 @@ class App extends Component {
       });
 
     let proj2Libs = {};
-    let backendURL = apiBaseURL + libraryEndPoint + "/" + tokenstr + "&" + uidstr;
+    let backendURL = apiBaseURL + libraryEndPoint;
     console.log("URL: " + backendURL);
     axios
-      .get(backendURL)
+      .get(backendURL, {withCredentials: true})
       .then(res => {
-        res.data.libraries.forEach(library => {
-          if (! proj2Libs.hasOwnProperty(library.projectId)){
-            proj2Libs[library.projectId]= [];
+        let libraries = res.data.libraries;
+        let theUid = res.data.uid;
+
+        if (Object(libraries).length > 0){
+          res.data.libraries.forEach(library => {
+            if (! proj2Libs.hasOwnProperty(library.projectId)){
+              proj2Libs[library.projectId]= [];
+            }
+            proj2Libs[library.projectId].push ({ "dbid": library.dbId, "libid": library.libraryId});
+          })
+  
+          let theProjList = Object.keys(proj2Libs).sort();
+  
+          if ((proj === null) && (theProjList.length>0)) {
+            proj = theProjList[0];
           }
-          proj2Libs[library.projectId].push ({ "dbid": library.dbId, "libid": library.libraryId});
-        })
-
-        let theProjList = Object.keys(proj2Libs).sort();
-
-        if ((proj === null) && (theProjList.length>0)) {
-          proj = theProjList[0];
+  
+          let projSearchList = theProjList.map(item=>{return({value:item, label:item})})
+          
+          const libList = proj2Libs[proj];
+  
+          // create the search options; [replace with existing search endpoint in future]
+          const items = [];
+          for (let i = 0; i < libList.length; i++) {
+            items.push({ value: libList[i].dbid, label: libList[i].libid });
+          }
+          // sort the items
+          items.sort(compareByLabel);
+  
+          this.setState({uid: theUid, allLibraryList: items, currentProject:proj, projList:projSearchList, login:true });
+          // console.log(items);
+        }
+        else
+        {
+          this.setState({allLibraryList: [], currentProject:"", projList:[], login:false });
         }
 
-        let projSearchList = theProjList.map(item=>{return({value:item, label:item})})
-        
-        const libList = proj2Libs[proj];
-
-        // create the search options; [replace with existing search endpoint in future]
-        const items = [];
-        for (let i = 0; i < libList.length; i++) {
-          items.push({ value: libList[i].dbid, label: libList[i].libid });
-        }
-        // sort the items
-        items.sort(compareByLabel);
-
-        this.setState({allLibraryList: items, currentProject:proj, projList:projSearchList, uid: uidstr, token:tokenstr });
-        // console.log(items);
+ 
       })
       .catch(err => {
         console.log(err);
@@ -215,12 +223,12 @@ class App extends Component {
 
     const appData = {
       uid: this.state.uid,
-      token: this.state.token,
       data: this.state.data,
       searchOptions: this.state.searchOptions,
       allLibraryList:  this.state.allLibraryList,
       currentProject: this.state.currentProject,
-      projList: this.state.projList
+      projList: this.state.projList,
+      login: this.state.login
 
     };
 
@@ -236,12 +244,13 @@ class App extends Component {
         <CssBaseline />
         <div>
           <BrowserRouter>
-            {this.state.data ? (
+            {this.state.login ? (
               <DataProvider value={appData}>
-                <Navbar currentProj={this.state.currentProject} searchOptions={this.state.allLibraryList}  defaultText="Search by library ID" handle="getLib" uid={this.state.uid} token={this.state.token} />
+                <Navbar uid={this.state.uid} currentProj={this.state.currentProject} searchOptions={this.state.allLibraryList}  defaultText="Search by library ID" handle="getLib"  />
                 <Switch>
                   <Route exact path="/samples" component={LandingPage} />
                   <Route exact path="/" component={LibrariesPage} />
+                  <Route exact path="/login" component={LoginPage} />
                   <Route
                     exact
                     path="/factor/:protein_name"
@@ -262,7 +271,7 @@ class App extends Component {
                 </Switch>
               </DataProvider>
             ) : (
-              <LinearProgress />
+              <Route component={LoginPage} />
             )}
           </BrowserRouter>
         </div>

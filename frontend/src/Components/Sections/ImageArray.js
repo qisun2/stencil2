@@ -45,7 +45,7 @@ class ImageArray extends React.Component {
     let item=props.imgObj;
     let sizes = props.sizes;
     let stepId = (item!==undefined)?(item.stepId):("X");
-    if(item==undefined){
+    if(item===undefined){
       return (
         <Grid item key={stepId}>
               <img
@@ -62,7 +62,7 @@ class ImageArray extends React.Component {
         case "image":
         case "jpg":
         case "png": 
-        return (sizes==undefined)?(
+        return (sizes===undefined)?(
         <Grid item key={stepId}>
           <img src={item.URL} alt={item.dataLabel} title={item.dataLabel}  />
           </Grid>):(                      
@@ -72,7 +72,7 @@ class ImageArray extends React.Component {
         ;
            
         case "lineplot":
-          return (sizes==undefined)?(<Grid item key={stepId}>
+          return (sizes===undefined)?(<Grid item key={stepId}>
             <LinePlot chartData={item.preLoadData?item.preLoadData.compositePlot: {}} width={600} height={500} />
             </Grid>):(
             <Grid item key={stepId}>
@@ -122,7 +122,7 @@ class ImageArray extends React.Component {
             return (
               <Grid item>
                 <Radio
-                  checked={seletedStepId == stepIndex}
+                  checked={seletedStepId === stepIndex}
                   onChange={handleRadioChange}
                   value= {stepIndex}
                   name= {rgroup}
@@ -160,7 +160,7 @@ class ImageArray extends React.Component {
       }
     }
     let tablayout = this.props.layout;
-    if (tablayout.length==0) {
+    if (tablayout.length===0) {
       tablayout = [Object.keys(this.props.data[selectedTab]).sort()];
     }
 

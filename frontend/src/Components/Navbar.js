@@ -9,10 +9,14 @@ import {
   IconButton
 } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/HomeOutlined";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, Route  } from "react-router-dom";
 import Search from "./Search";
 import DataContext from "./DataContext";
-import InfoIcon from "@material-ui/icons/InfoOutlined";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
+
+import Config from "../Config";
 
 // component styles
 const styles = {
@@ -31,7 +35,7 @@ class LandingPage extends React.Component {
     const { classes } = this.props;
     const location = this.props.location.pathname;
 
-    return ((location !== "/") && (location !== "/libraries")) ? (
+    return ( (location !== "/libraries") && (location !== "/login")) ? (
       <Paper
         square
         elevation={0}
@@ -52,7 +56,7 @@ class LandingPage extends React.Component {
                 </Grid>
 
                 <Grid item sm={"auto"}>
-                <Search suggestions={this.props.searchOptions} defaultText={this.props.defaultText} handle={this.props.handle} uid={this.props.uid} token={this.props.token} />
+                <Search suggestions={this.props.searchOptions} defaultText={this.props.defaultText} handle={this.props.handle} />
                 </Grid>
               </Grid>
             </Grid>
@@ -70,13 +74,34 @@ class LandingPage extends React.Component {
                 </Tooltip>
               </Link>
 
-              <Link to="/help">
-                <Tooltip title="Help" aria-label="help">
+              <Link to="/account">
+                <Tooltip title="Account" aria-label="account">
                   <IconButton color="primary">
-                    <InfoIcon />
+                    <AccountCircle />
                   </IconButton>
                 </Tooltip>
               </Link>
+              {
+                (this.props.uid==="root")?(                  
+                  <Link to="/admin">
+                  <Tooltip title="Admin" aria-label="admin">
+                    <IconButton color="primary">
+                      <SupervisedUserCircle />
+                    </IconButton>
+                  </Tooltip>
+                </Link>
+                ):("")
+
+
+              }
+              <a href={Config.settings.apiURL + "/logout"}>
+                <Tooltip title="Logout" aria-label="logout">
+                  <IconButton color="primary">
+                    <ExitToAppIcon />
+                  </IconButton>
+                </Tooltip>
+              </a >
+
             </Grid>
           </Grid>
         </CardActions>

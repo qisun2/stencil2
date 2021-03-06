@@ -2,7 +2,7 @@
 
 const settings = {
   apiURL: "http://localhost:8081",
-  rootURL:"http://localhost",
+  SSOURL: "http://localhost",
   samplesEndpoint: "/samples",
   librariesEndPoint: "/libraries",
   libraryPageEndPoint: "/libraries/dbid",

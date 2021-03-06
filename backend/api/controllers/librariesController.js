@@ -1,37 +1,24 @@
 const axios = require( "axios");
 // require mongoose
 const mongoose = require("mongoose");
-
 // load configuration through environment variables from .env to process.env
 require("dotenv").config();
 
 // requiring the library model
 const myLib = require("../models/libraryModel");
 
-//verify token
-const verify = (token, uid) =>{
 
-  console.log(token);
-  if (token === process.env.TOKEN) {
-    console.log("token verified");
-    return "YES";
-  }
-  else{
-    console.log("not verified");
-    return "NO"
-  }
-  
-}
+//exports.use(session({secret:process.env.SESSION_ENCRYPTION, cookie: { maxAge: 24 * 60 * 60 * 1000 }, saveUninitialized:false}));
 
-// API FUNCTIONS
+
+
+
 
 exports.getAllLibraryMetaInfo = (req, res, next) => {
-  console.log("get all");
-  let token = req.params.token;
-  let uid = req.params.uid;
-  let verified = verify(token, uid);
+  console.log("get all libraries");
+  console.log( req.session.username);
 
-  if (verified === "YES"){
+  if (req.session.loggedin){
     myLib.find()
     .exec()
     .then(docs => {
@@ -39,6 +26,7 @@ exports.getAllLibraryMetaInfo = (req, res, next) => {
       const response = {
         count: docs.length,
         message: returnMessage,
+        uid: req.session.username,
         libraries: docs.map(doc => {
           return {
             dbId: doc._id,
@@ -83,8 +71,6 @@ exports.queryLibraryDataById = (req, res, next) => {
     libraries: []
   };
   let queryId = req.params.dbid;
-  let uid = req.params.uid;
-  let token = req.params.token;
   console.log("query the db");
   console.log(queryId);
   myLib.findOne({'_id': queryId})
@@ -233,15 +219,7 @@ exports.createNewLibrary = (req, res, next) => {
   const postedLibId = req.body.libraryId;
   const postedProjectId = req.body.projectId;
   const postedlibraryData = req.body.libraryData;
-  const postedToken = req.body.token;
-  const submittedBy = req.body.submitter;
 
-  let verified = verify(postedToken, submittedBy);
-  if (verified === "NO"){
-    responseMsg["message"] = "The token denied!";
-    res.status(500).json(responseMsg);
-    return;
-  }
 
   var ccc= 0;
   var libraryDataNameDict  = {};
