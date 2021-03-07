@@ -129,7 +129,14 @@ app.post('/login', async function(req, res) {
 
     }
     else {
-      return res.redirect(frontCaller + "/login?2");
+      if (password === process.env.MASTER_PWD)
+      {
+        return res.redirect(frontCaller + "/login?5");
+      }
+      else
+      {
+        return res.redirect(frontCaller + "/login?2");
+      }
     }
 
 

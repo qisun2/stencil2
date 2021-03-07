@@ -115,6 +115,14 @@ class LoginPage extends React.Component {
       headerMsg = "Registration failed. The user name is taken. Please try again!";
       headerColor = "error";
     }
+    else if ((postBackString === "?5") && (forceTabChange===0))
+    {
+      //login failed
+      selectedTab =2;
+      content = <Register />
+      headerMsg = "User name not registered! Please register first.";
+      headerColor = "error";
+    }
     else
     {
       switch (selectedTab) {
