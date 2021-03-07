@@ -16,6 +16,8 @@ import ExploreGrid from "./Components/ExploreGrid";
 import LandingPage from "./Components/LandingPage";
 import LibrariesPage from "./Components/LibrariesPage";
 import LoginPage from "./Components/LoginPage";
+import AdminPage from "./Components/AdminPage";
+import AccountPage from "./Components/AccountPage";
 import Sample from "./Components/Sample";
 import Library from "./Components/showLibrary"
 import Help from "./Components/Help";
@@ -251,6 +253,8 @@ class App extends Component {
                   <Route exact path="/samples" component={LandingPage} />
                   <Route exact path="/" component={LibrariesPage} />
                   <Route exact path="/login" component={LoginPage} />
+                  <Route exact path="/admin" component={AdminPage} />
+                  <Route exact path="/account" component={AccountPage} />
                   <Route
                     exact
                     path="/factor/:protein_name"
