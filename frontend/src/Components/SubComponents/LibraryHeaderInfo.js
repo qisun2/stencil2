@@ -21,15 +21,7 @@ function HeaderInfo(props) {
 
         </Grid>
       </Grid>
-      <Grid container spacing={1} alignItems={"center"}>
-        <Grid item sm={"auto"}>
-          {/* description */}
-          <Typography component="p" variant="body1">
-            Group Tag: {props.data.groupTag ? JSON.stringify(props.data.groupTag) : "N/A"} <br />
-            Type: {props.data.libraryType ?  props.data.libraryType : "N/A"} <br />
-          </Typography>
-        </Grid>
-      </Grid>
+
     </CardContent>
   );
 }
