@@ -18,6 +18,7 @@ import LibrariesPage from "./Components/LibrariesPage";
 import LoginPage from "./Components/LoginPage";
 import AdminPage from "./Components/AdminPage";
 import AccountPage from "./Components/AccountPage";
+import EditUserPage from "./Components/EditUserPage";
 import Sample from "./Components/Sample";
 import Library from "./Components/showLibrary"
 import Help from "./Components/Help";
@@ -119,6 +120,7 @@ function compareByLabel(a, b) {
 class App extends Component {
   state = {
     uid : "",
+    role: "",
     isThemeLight: true,
     searchOptions: [],
     allLibraryList:[],
@@ -175,6 +177,7 @@ class App extends Component {
       .then(res => {
         let libraries = res.data.libraries;
         let theUid = res.data.uid;
+        let theRole = res.data.role;
 
         if (Object(libraries).length > 0){
           res.data.libraries.forEach(library => {
@@ -202,7 +205,7 @@ class App extends Component {
           // sort the items
           items.sort(compareByLabel);
   
-          this.setState({uid: theUid, allLibraryList: items, currentProject:proj, projList:projSearchList, login:true });
+          this.setState({uid: theUid, role:theRole, allLibraryList: items, currentProject:proj, projList:projSearchList, login:true });
           // console.log(items);
         }
         else
@@ -225,6 +228,7 @@ class App extends Component {
 
     const appData = {
       uid: this.state.uid,
+      role: this.state.role,
       data: this.state.data,
       searchOptions: this.state.searchOptions,
       allLibraryList:  this.state.allLibraryList,
@@ -248,13 +252,14 @@ class App extends Component {
           <BrowserRouter>
             {this.state.login ? (
               <DataProvider value={appData}>
-                <Navbar uid={this.state.uid} currentProj={this.state.currentProject} searchOptions={this.state.allLibraryList}  defaultText="Search by library ID" handle="getLib"  />
+                <Navbar uid={this.state.uid} role={this.state.role} currentProj={this.state.currentProject} searchOptions={this.state.allLibraryList}  defaultText="Search by library ID" handle="getLib"  />
                 <Switch>
                   <Route exact path="/samples" component={LandingPage} />
                   <Route exact path="/" component={LibrariesPage} />
                   <Route exact path="/login" component={LoginPage} />
                   <Route exact path="/admin" component={AdminPage} />
                   <Route exact path="/account" component={AccountPage} />
+                  <Route exact path="/edituser/:uid" component={EditUserPage} />
                   <Route
                     exact
                     path="/factor/:protein_name"

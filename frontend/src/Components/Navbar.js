@@ -82,7 +82,7 @@ class LandingPage extends React.Component {
                 </Tooltip>
               </Link>
               {
-                (this.props.uid==="root")?(                  
+                (this.props.role==="admin")?(                  
                   <Link to="/admin">
                   <Tooltip title="Admin" aria-label="admin">
                     <IconButton color="primary">

@@ -8,6 +8,8 @@ import DataContext from "./DataContext";
 import Config from "../Config";
 import axios from "axios";
 import Button from '@material-ui/core/Button';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 const styles = theme => ({
   root: {
     height: "100%",
@@ -51,13 +53,17 @@ const styles = theme => ({
   }
 });
 
-class AccountPage extends React.Component {
+class EditUserPage extends React.Component {
 
   static contextType = DataContext;
-  state = {userName:"", userEmail:"", role:"", projects:""};
+  state = {userName:"", userEmail:"", role:"", status:"", projects:""};
+
   componentDidMount() {
+    var uid = this.props.match.params.uid;
+    console.log("edit user id");
+    console.log(uid);
     axios
-      .get(Config.settings.apiURL + "/libraries/uid/" + this.context.uid, {withCredentials: true})
+      .get(Config.settings.apiURL + "/libraries/uid/" +uid, {withCredentials: true})
       .then(res => {
         const targets = res.data;
         console.log("retrieved");
@@ -68,10 +74,19 @@ class AccountPage extends React.Component {
         console.log(err);
       });
   }
+  handleChange = (event) => {
+    this.setState({"role":event.target.value});
+  };
+  handleChangeStatus = (event) => {
+    this.setState({"status":event.target.value});
+  };
 
+  handleChangeProjects = (event) => {
+    this.setState({"projects":event.target.value});
+  };
   render() {
     const { classes } = this.props;
-
+    console.log("render edituser id");
     let postBackString = this.props.location.search;
     let headerMsg = "";
     let headerColor ="";
@@ -94,14 +109,14 @@ class AccountPage extends React.Component {
         <div className={classes.content}>
         <form
                     id="main-login"
-                    action={Config.settings.apiURL + "/account"}
+                    action={Config.settings.apiURL + "/edituser"}
                     method="post">
 
         <Paper square>
           <div className={classes.jumbotron}>
             <div className={classes.container}>
             <Typography variant="h4" gutterBottom>
-              Account Information
+              Admin Page For User Account
             </Typography>
             {(headerMsg)?(<Typography variant="h6" color={headerColor} gutterBottom>
                {headerMsg}
@@ -126,6 +141,54 @@ class AccountPage extends React.Component {
                     name="email"
                     placeholder={this.state.userEmail}
                     size="small" variant="outlined" />
+                  </Grid>
+              </Grid>
+              <Grid container spacing={2} alignItems="center" direction="row">
+                  <Grid item  xs={2}>
+                    <Typography variant="body1" gutterBottom>Role</Typography>
+                  </Grid>
+                  <Grid item  xs={2}>
+                    <Select
+                      labelId="selectrole"
+                      id="selectrole"
+                      name="selectrole"
+                      value={this.state.role}
+                      onChange={this.handleChange}
+                    >
+                      <MenuItem value="admin">admin</MenuItem>
+                      <MenuItem value="regular">regular</MenuItem>
+                      <MenuItem value="guest">guest</MenuItem>
+                    </Select>
+                  </Grid>
+              </Grid>
+              <Grid container spacing={2} alignItems="center" direction="row">
+                  <Grid item  xs={2}>
+                    <Typography variant="body1" gutterBottom>Status</Typography>
+                  </Grid>
+                  <Grid item  xs={2}>
+                    <Select
+                      labelId="selectstatus"
+                      id="selectstatus"
+                      name="selectstatus"
+                      value={this.state.status}
+                      onChange={this.handleChangeStatus}
+                    >
+                      <MenuItem value="active">active</MenuItem>
+                      <MenuItem value="inactive">inactive</MenuItem>
+                    </Select>
+                  </Grid>
+              </Grid>
+              <Grid container spacing={2} alignItems="center" direction="row">
+                  <Grid item  xs={2}>
+                    <Typography variant="body1" gutterBottom>Projects</Typography>
+                  </Grid>
+                  <Grid item  xs={2}>
+                  <input
+                    type="text"
+                    name="projects"
+                    value={this.state.projects}
+                    size="small" variant="outlined" 
+                    onChange={this.handleChangeProjects}/>
                   </Grid>
               </Grid>
               <Grid container spacing={2} alignItems="center" direction="row">
@@ -172,8 +235,8 @@ class AccountPage extends React.Component {
 
 
 
-AccountPage.propTypes = {
+EditUserPage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(AccountPage);
+export default withStyles(styles)(EditUserPage);

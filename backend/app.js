@@ -189,7 +189,7 @@ app.post('/register', async function(req, res) {
       userPassword: hashedPassword,
       role: userRole,
       authMode: "local",
-      projects: [],
+      projects: "",
       status: "active"
     });
     newUser.createTimestamp = Date.now();
@@ -197,14 +197,94 @@ app.post('/register', async function(req, res) {
 
     await newUser.save();
     console.log("user created");
-    res.redirect(frontCaller + "/login?1");
-    res.end();
+    return res.redirect(frontCaller + "/login?1");
 
 	} else {
 		res.send('Please fillout username and password!');
 		res.end();
 	}
 });
+
+
+app.post('/account', async function(req, res) {
+  let frontCaller = process.env.FRONT_API;
+  
+  var uid = req.body.uid.trim();
+
+  if ((queryId === req.session.username) || (req.session.role==="admin")){
+    var email = req.body.email.trim();
+    var password = req.body.password.trim();
+    var password2 = req.body.password2.trim();
+    if (password !== password2){
+      return res.redirect(frontCaller + "/account?2");
+    }
+    const doc = await usermodel.findOne({'userName': uid});
+    if (email){
+      const update = { userEmail: email };
+      await doc.updateOne(update);
+    }
+    if (password){
+      let hashedPassword = await bcrypt.hash(password,10);
+      const update = { userPassword: hashedPassword };
+      await doc.updateOne(update);
+    }
+    
+    return res.redirect(frontCaller + "/account?1");
+  }
+  else
+  {
+    res.send('no right to edit!');
+		res.end();
+  }
+
+
+});
+
+app.post('/edituser', async function(req, res) {
+  if (req.session.role==="admin"){
+    let frontCaller = process.env.FRONT_API;
+    var uid = req.body.uid.trim();
+    var email = req.body.email.trim();
+    var password = req.body.password.trim();
+    var password2 = req.body.password2.trim();
+    var newrole = req.body.selectrole.trim();
+    var newstatus = req.body.selectstatus.trim();
+    var newprojects = req.body.projects.trim();
+    if (password !== password2){
+      return res.redirect(frontCaller + "/account?2");
+    }
+    const doc = await usermodel.findOne({'userName': uid});
+    if (email){
+      const update = { userEmail: email };
+      await doc.updateOne(update);
+    }
+    if (password){
+      let hashedPassword = await bcrypt.hash(password,10);
+      const update = { userPassword: hashedPassword };
+      await doc.updateOne(update);
+    }
+    if (newrole) {
+      const update = { role: newrole };
+      await doc.updateOne(update);
+    }
+    if (newstatus) {
+      const update = { status: newstatus };
+      await doc.updateOne(update);
+    }
+    if (newprojects) {
+      const update = { projects: newprojects };
+      await doc.updateOne(update);
+    }
+    return res.redirect(frontCaller + "/admin");
+  }
+  else
+  {
+    res.send('no right to edit!');
+		res.end();
+  }
+
+});
+
 
 app.get("/logout", function (req, res) {
   req.session.destroy();

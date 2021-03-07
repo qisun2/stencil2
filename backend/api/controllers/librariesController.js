@@ -6,12 +6,88 @@ require("dotenv").config();
 
 // requiring the library model
 const myLib = require("../models/libraryModel");
-
+const myUser = require("../models/userModel");
 
 //exports.use(session({secret:process.env.SESSION_ENCRYPTION, cookie: { maxAge: 24 * 60 * 60 * 1000 }, saveUninitialized:false}));
 
 
+exports.queryUserId = (req, res, next) => {
+  let queryId = req.params.uid;
 
+  if ((queryId === req.session.username) || (req.session.role==="admin")){
+    myUser.findOne({'userName': queryId})
+    .exec()
+    .then(doc => {
+      returnMessage = "success";
+      const response = {
+        message: returnMessage,
+        user: {  userName: doc.userName,
+        userEmail: doc.userEmail,
+        role: doc.role,
+        authMode: doc.authMode,
+        projects: doc.projects,
+        createTimestamp: doc.createTimestamp,
+        updateTimestamp: doc.updateTimestamp,
+        status: doc.status}
+      };
+      res.status(200).json(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: err });
+    });
+
+  }
+  else
+  {
+    const response = {
+      count: 0,
+      message: "denied",
+      users: {}
+    };
+    res.status(200).json(response);
+  }
+}
+
+exports.allUsers = (req, res, next) => {
+  if (req.session.role==="admin"){
+    myUser.find()
+    .exec()
+    .then(docs => {
+      returnMessage = "success";
+      const response = {
+        message: returnMessage,
+        users: docs.map(doc => {
+          return {
+            userName: doc.userName,
+            userEmail: doc.userEmail,
+            role: doc.role,
+            authMode: doc.authMode,
+            projects: doc.projects,
+            createTimestamp: doc.createTimestamp,
+            updateTimestamp: doc.updateTimestamp,
+            status: doc.status
+          };
+        })
+      };
+      res.status(200).json(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: err });
+    });
+
+  }
+  else
+  {
+    const response = {
+      count: 0,
+      message: "denied",
+      users: {}
+    };
+    res.status(200).json(response);
+  }
+}
 
 
 exports.getAllLibraryMetaInfo = (req, res, next) => {
@@ -27,6 +103,7 @@ exports.getAllLibraryMetaInfo = (req, res, next) => {
         count: docs.length,
         message: returnMessage,
         uid: req.session.username,
+        role: req.session.role,
         libraries: docs.map(doc => {
           return {
             dbId: doc._id,

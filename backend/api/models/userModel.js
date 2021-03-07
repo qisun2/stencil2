@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema({
   userPassword: { type: String },
   role: {type:String},
   authMode: { type: String },
-  projects: {type: Array, of: Map},
+  projects: {type: String },
   createTimestamp: {type: Date},
   updateTimestamp: {type: Date},
   status: {type: String},

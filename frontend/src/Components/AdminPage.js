@@ -3,14 +3,22 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import Table from "@material-ui/core/Table";
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import DataContext from "./DataContext";
 import Config from "../Config";
-import Button from '@material-ui/core/Button';
-import { Route, Redirect} from "react-router-dom";
+import axios from "axios";
+import { Link} from "react-router-dom";
 
 const styles = theme => ({
+
+  table: {
+  },
+
   root: {
     height: "100%",
     maxWidth: 980,
@@ -55,11 +63,21 @@ const styles = theme => ({
 
 class AdminPage extends React.Component {
 
+  static contextType = DataContext;
+  state = {"users":[]};
+  componentDidMount() {
+    axios
+      .get(Config.settings.apiURL + "/libraries/alluid", {withCredentials: true})
+      .then(res => {
+        this.setState({"users":res.data.users});
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
   render() {
     const { classes } = this.props;
-
-
     return(
       <div className={classes.root}>
         <div className={classes.content}>
@@ -71,9 +89,44 @@ class AdminPage extends React.Component {
             <Typography variant="h4" gutterBottom>
                Stencil Admin
             </Typography>
-            <Typography component="div" className={classes.contentHolder}>
-                   To be added
-            </Typography>
+            <TableContainer component={Paper}>
+              <Table className={classes.table}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="left">User</TableCell>
+                    <TableCell align="left">Email</TableCell>
+                    <TableCell align="left">Role</TableCell>
+                    <TableCell align="left">Projects</TableCell>
+                    <TableCell align="left">Created</TableCell>
+                    <TableCell align="left">Status</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {this.state.users.map((user) => (
+                    <TableRow key={user.userName}>
+                      <TableCell component="th" scope="row">
+                        <Link to={"/edituser/"+ user.userName}>{user.userName}</Link>
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {user.userEmail}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {user.role}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {user.projects}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {user.createTimestamp.replace(/T.+/, '')}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {user.status}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
             </div>
           </div>
         </Paper>
