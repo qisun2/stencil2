@@ -263,6 +263,7 @@ exports.createNewLibrary = (req, res, next) => {
     return;
   }
 
+
   if (req.body.sampleId === undefined) 
   {
     req.body.sampleId = req.libraryId;
@@ -284,6 +285,10 @@ exports.createNewLibrary = (req, res, next) => {
   {
     req.body.libraryType = "";
   }
+  if (req.body.submitter === undefined) 
+  {
+    req.body.submitter = "";
+  }
 
   if (req.body.libraryData === undefined) 
   {
@@ -296,7 +301,7 @@ exports.createNewLibrary = (req, res, next) => {
   const postedLibId = req.body.libraryId;
   const postedProjectId = req.body.projectId;
   const postedlibraryData = req.body.libraryData;
-
+  const submittedBy = req.body.submitter;
 
   var ccc= 0;
   var libraryDataNameDict  = {};
