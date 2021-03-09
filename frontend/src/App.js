@@ -178,38 +178,45 @@ class App extends Component {
         let libraries = res.data.libraries;
         let theUid = res.data.uid;
         let theRole = res.data.role;
+        let items = [];
+        let proj = null;
+        let projSearchList = [];
+        if (theUid){
+          console.log("login confirmed");
 
-        if (Object(libraries).length > 0){
-          res.data.libraries.forEach(library => {
-            if (! proj2Libs.hasOwnProperty(library.projectId)){
-              proj2Libs[library.projectId]= [];
+          if (Object.keys(proj2Libs).length > 0){
+            res.data.libraries.forEach(library => {
+              if (! proj2Libs.hasOwnProperty(library.projectId)){
+                proj2Libs[library.projectId]= [];
+              }
+              proj2Libs[library.projectId].push ({ "dbid": library.dbId, "libid": library.libraryId});
+            })
+    
+            let theProjList = Object.keys(proj2Libs).sort();
+    
+            if ((proj === null) && (theProjList.length>0)) {
+              proj = theProjList[0];
             }
-            proj2Libs[library.projectId].push ({ "dbid": library.dbId, "libid": library.libraryId});
-          })
-  
-          let theProjList = Object.keys(proj2Libs).sort();
-  
-          if ((proj === null) && (theProjList.length>0)) {
-            proj = theProjList[0];
+    
+            projSearchList = theProjList.map(item=>{return({value:item, label:item})})
+            
+            const libList = proj2Libs[proj];
+    
+            // create the search options; [replace with existing search endpoint in future]
+            for (let i = 0; i < libList.length; i++) {
+              items.push({ value: libList[i].dbid, label: libList[i].libid });
+            }
+            // sort the items
+            items.sort(compareByLabel);
           }
-  
-          let projSearchList = theProjList.map(item=>{return({value:item, label:item})})
-          
-          const libList = proj2Libs[proj];
-  
-          // create the search options; [replace with existing search endpoint in future]
-          const items = [];
-          for (let i = 0; i < libList.length; i++) {
-            items.push({ value: libList[i].dbid, label: libList[i].libid });
-          }
-          // sort the items
-          items.sort(compareByLabel);
+
   
           this.setState({uid: theUid, role:theRole, allLibraryList: items, currentProject:proj, projList:projSearchList, login:true });
           // console.log(items);
         }
         else
         {
+          console.log("login failed");
           this.setState({allLibraryList: [], currentProject:"", projList:[], login:false });
         }
 
