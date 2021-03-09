@@ -137,7 +137,7 @@ class App extends Component {
     const libraryEndPoint = Config.settings.librariesEndPoint;
 
     const url = window.location.href;
-    let proj = null;
+    let proj = "";
     const found = url.match("project/([^?]+)");
     if (found){
       proj = found[1];
@@ -175,11 +175,9 @@ class App extends Component {
     axios
       .get(backendURL, {withCredentials: true})
       .then(res => {
-        let libraries = res.data.libraries;
         let theUid = res.data.uid;
         let theRole = res.data.role;
         let items = [];
-        let proj = null;
         let projSearchList = [];
         if (theUid){
           console.log("login confirmed");
@@ -194,11 +192,14 @@ class App extends Component {
     
             let theProjList = Object.keys(proj2Libs).sort();
     
-            if ((proj === null) && (theProjList.length>0)) {
+            if ((proj === "") && (theProjList.length>0)) {
               proj = theProjList[0];
             }
     
-            projSearchList = theProjList.map(item=>{return({value:item, label:item})})
+            if (theProjList){
+              projSearchList = theProjList.map(item=>{return({value:item, label:item})})
+            }
+            
             
             const libList = proj2Libs[proj];
     
