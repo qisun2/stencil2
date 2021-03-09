@@ -182,7 +182,7 @@ class App extends Component {
         if (theUid){
           console.log("login confirmed");
 
-          if (Object.keys(proj2Libs).length > 0){
+          if (Object.keys(res.data.libraries).length > 0){
             res.data.libraries.forEach(library => {
               if (! proj2Libs.hasOwnProperty(library.projectId)){
                 proj2Libs[library.projectId]= [];
@@ -192,8 +192,10 @@ class App extends Component {
     
             let theProjList = Object.keys(proj2Libs).sort();
     
+            console.log("check default proj: " + proj);
             if ((proj === "") && (theProjList.length>0)) {
               proj = theProjList[0];
+              console.log("default proj: " + proj);
             }
     
             if (theProjList){
