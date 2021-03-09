@@ -27,26 +27,22 @@ Installation:
 
 4. Configure the web site.
 
-   The web application must be redirected with token and uid from another authentication web application, and requires HTTPS. 
-
-   The redirecting URL is: https://stencil.biohpc.cornell.edu:3000/?TOKEN&USERID
-   
-   The ampersand character "&" is not allowed in token. 
-
-   An example apache web site is in the directory "apache_site".
-
    a. stencil2/backend/.env
 
    DB_HOST="localhost" // Mongo db host
-DB_NAME="testDB"    // Mongo db database name
+   DB_NAME="testDB"    // Mongo db database name
    API_PORT="8081          // API port name
+
+   FRONT_API="https://localhost:3000"   //root URL of the frontend 
 
    HTTPS = true                // using HTTPS
 HTTPSCERT = "/home/xxxxx/fullchain.pem" //path of https certificate   
    HTTPSKEY = "/home/xxxxx/privkey.pem"  //path of https key
-   
-   TOKEN = "aaa"              //token for authentication
-   
+
+   SESSION_ENCRYPTION = "xxxxxx"
+SESSION_NAME = "stencil"
+   MASTER_PWD = "aaaaaa"
+
    PROXY_SETTING='{"/xxxxxx" : "http://xxx.xxxx.xxxx.xx:xxxx"}'   // proxy setting
    
    * If your frontend app needs to access api call from 3rd party, e.g. galaxy server, you need to use proxy  through backend server. In the frontend app, the URL "http://xxx.xxxx.xxxx.xx:xxxx/datasets/{options}" should be replaced with "http://backendserver:xxxx/datasets/{options}". Most browsers would prohibit cross-domain call for the front end, so that proxy is needed.
@@ -68,7 +64,7 @@ HTTPSCERT = "/home/xxxxx/fullchain.pem" //path of https certificate
    
    apiURL: "http://stencil.biohpc.cornell.edu:8081",    // URL of the backend server
    
-   rootURL: "https://stencil.biohpc.cornell.edu",   // URL of login page 
+   SSOURL: "https://stencil.biohpc.cornell.edu",   // URL of login page 
    
    samplesEndpoint: "/samples",       // api endpoint for retrieve sample list (deprecated)
    librariesEndPoint: "/libraries",		// api endpoint for retrieve library list
@@ -111,6 +107,12 @@ HTTPSCERT = "/home/xxxxx/fullchain.pem" //path of https certificate
 
 5. Open browser
 
-   backend url:  http://stencil.biohpc.cornell.edu:8081/libraries/TOKEN&UID
+   URL:  http://localhost:3000
 
-   frontend url: http://stencil.biohpc.cornell.edu:3000/?TOKEN&UID
+   
+
+6. Web access of image files stored in stencil: 
+
+   keep under stencil2/backend/sampleData/Images. They can be organized in sub-directories.
+
+   The image url is: http//localhost:8081/images/subDirection/myImage.png
