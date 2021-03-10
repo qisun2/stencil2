@@ -72,16 +72,19 @@ class AccountPage extends React.Component {
   render() {
     const { classes } = this.props;
 
+    // Setting the title of the browser tab
+    document.title = "Edit User";
+
     let postBackString = this.props.location.search;
     let headerMsg = "";
     let headerColor ="";
-    if (postBackString === "?1") 
+    if (postBackString === "?1")
     {
       //update successful
       headerMsg = "User information updated.";
       headerColor = "primary";
     }
-    else if (postBackString === "?2") 
+    else if (postBackString === "?2")
     {
       //update not successful, password not matching
       headerMsg = "Passwords do not match.";

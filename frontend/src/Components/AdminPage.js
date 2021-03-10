@@ -78,6 +78,9 @@ class AdminPage extends React.Component {
 
   render() {
     const { classes } = this.props;
+    // Setting the title of the browser tab
+    document.title = "Admin";
+
     return(
       <div className={classes.root}>
         <div className={classes.content}>
