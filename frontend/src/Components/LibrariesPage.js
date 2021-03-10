@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
+
+// MaterialUI packages
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
-
-
 
 // Sub Components
 import Search from "./Search";
@@ -43,15 +43,6 @@ const styles = theme => ({
   center: {
     margin: "auto",
     maxWidth: 1140
-  },
-  leftIcon: {
-    marginRight: theme.spacing(1)
-  },
-  companyLogo: {
-    width: 160
-  },
-  copyrightStyle: {
-    textAlign: "center"
   }
 });
 
@@ -61,10 +52,9 @@ class SimpleLibrariesPage extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const currentYear = new Date().getFullYear();
 
     // Setting the title of the browser tab
-    document.title = "Samples in Stencil";
+    document.title = "Home";
 
     return (
       <div className={classes.root}>
@@ -94,11 +84,11 @@ class SimpleLibrariesPage extends React.Component {
             >
               {/* SearchBar */}
               <Grid item>
-                <Search suggestions={this.context.projList} defaultText={"Project: " + this.context.currentProject} handle="project" />
+                <Search suggestions={this.context.projList} defaultText={"Project ID" + this.context.currentProject} handle="project" />
               </Grid>
 
               <Grid item>
-                <Search suggestions={this.context.allLibraryList} defaultText="Browse by library ID" handle="getLib" />
+                <Search suggestions={this.context.allLibraryList} defaultText="Browse by experiment ID" handle="getLib" />
               </Grid>
 
               <Grid item></Grid>
@@ -110,52 +100,22 @@ class SimpleLibrariesPage extends React.Component {
             <Grid container spacing={2} direction="column" alignItems="center">
               <Grid item>
                 <div className={classes.container}>
-                  <Typography variant="h6">Overview</Typography>
+                  <Typography variant="h6">Project Overview</Typography>
                   <Divider />
                   <br />
                   <Typography variant="body1">
-                    Stencil is a web based system for visualizing results of data processing pipeline.
+                    Project summary.
                   </Typography>
                   <br />
                   <Divider />
                 </div>
               </Grid>
-              {/* Footer  Section */}
-              <Grid item className={classes.center}>
-                <Grid
-                  container
-                  spacing={4}
-                  alignItems={"center"}
-                  direction="row"
-                  justify="center"
-                  alignContent="center"
-                  className={classes.footer}
-                >
-                  <Grid item>
-                    <img
-                      src="https://via.placeholder.com/150"
-                      alt="company_logo1"
-                      className={classes.companyLogo}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <img
-                      src="https://via.placeholder.com/150"
-                      alt="company_logo2"
-                      className={classes.companyLogo}
-                    />
-                  </Grid>
-                </Grid>
-                <br />
-                <Divider />
-              </Grid>
 
-              {/* copyright info */}
-              <Grid item>
-                <Typography variant="body2" className={classes.copyrightStyle}>
-                  &copy; {currentYear} Cornell
-                </Typography>
-              </Grid>
+              <br />
+              <br />
+
+              {/* explore samples here */}
+
             </Grid>
           </Paper>
         </div>

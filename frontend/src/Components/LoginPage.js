@@ -1,14 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
+
+import Config from "../Config";
+
+// MaterialUI packages
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Config from "../Config";
 import Button from '@material-ui/core/Button';
-import { Route, Redirect} from "react-router-dom";
+import Divider from "@material-ui/core/Divider";
+
+// Cornell logos
+import logo1 from '../logos/logo1.svg';
+import logo2 from '../logos/logo2.svg';
 
 const styles = theme => ({
   root: {
@@ -42,11 +49,8 @@ const styles = theme => ({
     margin: "auto",
     maxWidth: 1140
   },
-  leftIcon: {
-    marginRight: theme.spacing(1)
-  },
   companyLogo: {
-    width: 160
+    width: 100
   },
   copyrightStyle: {
     textAlign: "center"
@@ -67,17 +71,15 @@ class LoginPage extends React.Component {
   };
 
   render() {
-    console.log("read params now");
     let postBackString = this.props.location.search;
     var { selectedTab,  forceTabChange} = this.state;
     const { classes } = this.props;
+    const currentYear = new Date().getFullYear();
+
     let tabnames = [];
     tabnames.push(<Tab label="Local Login" key="0" />);
     tabnames.push(<Tab label="Single Sign-on" key="1" />);
     tabnames.push(<Tab label="Register" key="2" />);
-
-    console.log("selected ");
-    console.log(selectedTab)
 
     let content = "";
     let headerMsg = "";
@@ -146,21 +148,21 @@ class LoginPage extends React.Component {
       <div className={classes.root}>
         <div className={classes.content}>
 
-
         <Paper square>
           <div className={classes.jumbotron}>
             <div className={classes.container}>
-            <Typography variant="h4" gutterBottom>
-               Stencil Login
-            </Typography>
-            {(headerMsg)?(<Typography variant="h6" color={headerColor} gutterBottom>
-               {headerMsg}
-            </Typography>):("")
-            }
+              <Typography variant="h4" align="center" gutterBottom>
+                 STENCIL Login
+              </Typography>
+              {(headerMsg)?(<Typography variant="h6" color={headerColor} gutterBottom>
+                 {headerMsg}
+              </Typography>):("")
+              }
               <Typography component="div" className={classes.contentHolder}>
                     <Tabs
                       value={selectedTab}
                       onChange={this.handleChange}
+                      centered={true}
                       indicatorColor="primary"
                       textColor="primary"
                     >
@@ -172,6 +174,64 @@ class LoginPage extends React.Component {
             </div>
           </div>
         </Paper>
+
+        <br />
+        <br />
+
+        <Paper square>
+          <Grid container spacing={2} direction="column" alignItems="center">
+            <Grid item>
+              <div className={classes.container}>
+                <Typography variant="h6">Overview</Typography>
+                <Divider />
+                <br />
+                <Typography variant="body1">
+                  STENCIL is a web-based platform for visualizing results of data processing pipeline.
+                </Typography>
+                <br />
+                <Divider />
+              </div>
+            </Grid>
+
+            {/* Footer  Section */}
+            <Grid item className={classes.center}>
+              <Grid
+                container
+                spacing={4}
+                alignItems={"center"}
+                direction="row"
+                justify="center"
+                alignContent="center"
+                className={classes.footer}
+              >
+                <Grid item>
+                  <img
+                    src={logo1}
+                    alt="cib_logo"
+                    className={classes.companyLogo}
+                  />
+                </Grid>
+                <Grid item>
+                  <img
+                    src={logo2}
+                    alt="cornell_logo"
+                    className={classes.companyLogo}
+                  />
+                </Grid>
+              </Grid>
+              <br />
+              <Divider />
+            </Grid>
+
+            {/* copyright info */}
+            <Grid item>
+              <Typography variant="body2" className={classes.copyrightStyle}>
+                &copy; {currentYear} Cornell
+              </Typography>
+            </Grid>
+          </Grid>
+        </Paper>
+
         </div>
       </div>
 
@@ -189,7 +249,7 @@ class SSOlogin extends React.Component{
     return(
       <div>
         <Typography variant="subtitle1" gutterBottom>
-            <a href={Config.settings.SSOURL}>Click</a> if not redirected 
+            <a href={Config.settings.SSOURL}>Click</a> if not redirected
         </Typography>
       </div>
     )
@@ -204,46 +264,30 @@ class Register extends React.Component{
                     id="main-login"
                     action={Config.settings.apiURL + "/register"}
                     method="post">
-                <Typography variant="subtitle1" gutterBottom>
+                <Typography variant="subtitle1" align="center" gutterBottom>
                  * SSO users please leave the password fields blank.<br />
                 </Typography>
-                <Grid container spacing={2} alignItems="center">
-                  <Grid item  xs={8}>
-                  <input
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    size="small" variant="outlined" />
+                <Grid container spacing={2} direction="column" justify="center" alignItems="center">
+                  <Grid item xs={8}>
+                  <input type="text" name="username" placeholder="Username" size="small" variant="outlined" />
                   </Grid>
                 </Grid>
-                <Grid container spacing={2} alignItems="center">
-                  <Grid item  xs={8}>
-                  <input
-                    type="text"
-                    name="email"
-                    placeholder="Email"
-                    size="small" variant="outlined" />
+                <Grid container spacing={2} direction="column" justify="center" alignItems="center">
+                  <Grid item xs={8}>
+                  <input type="text" name="email" placeholder="Email" size="small" variant="outlined" />
                   </Grid>
                 </Grid>
-                <Grid container spacing={2} alignItems="center">
-                  <Grid item  xs={8}>
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    size="small" variant="outlined" />
+                <Grid container spacing={2} direction="column" justify="center" alignItems="center">
+                  <Grid item xs={8}>
+                  <input type="password" name="password" placeholder="Password" size="small" variant="outlined" />
                   </Grid>
                 </Grid>
-                <Grid container spacing={2} alignItems="center">
-                  <Grid item  xs={8}>
-                  <input
-                    type="password"
-                    name="password2"
-                    placeholder="Repeat password"
-                    size="small" variant="outlined" />
+                <Grid container spacing={2} direction="column" justify="center" alignItems="center">
+                  <Grid item xs={8}>
+                  <input type="password" name="password2" placeholder="Repeat password" size="small" variant="outlined" />
                   </Grid>
                 </Grid>
-                <Grid container spacing={2} direction="row" alignItems="center">
+                <Grid container spacing={2} direction="row" justify="center" alignItems="center">
                   <Grid item  xs={3}>
                   <br />
                   <Button type="submit" color="primary" fullWidth variant="contained">Register</Button>
@@ -257,37 +301,28 @@ class Register extends React.Component{
 
 class LoginBox extends React.Component{
   render() {
-    const { classes } = this.props;
     return (
               <div>
                 <form
                     id="main-login"
                     action={Config.settings.apiURL + "/login"}
                     method="post">
-                <Grid container spacing={2} alignItems="center">
-                  <Grid item  xs={8}>
-                  <input
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    size="small" variant="outlined" />
+                  <Grid container direction="column" justify="center" alignItems="center" spacing={2}>
+                    <Grid item xs={8}>
+                      <input type="text" name="username" placeholder="Username" size="small" variant="outlined" />
+                    </Grid>
                   </Grid>
-                </Grid>
-                <Grid container spacing={2} alignItems="center">
-                  <Grid item  xs={8}>
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    size="small" variant="outlined" />
+                  <Grid container direction="column" justify="center" alignItems="center" spacing={2}>
+                    <Grid item xs={8}>
+                      <input type="password" name="password" placeholder="Password" size="small" variant="outlined" />
+                    </Grid>
                   </Grid>
-                </Grid>
-                <Grid container spacing={2} direction="row" alignItems="center">
-                  <Grid item  xs={3}>
-                  <br />
-                  <Button type="submit" color="primary" fullWidth variant="contained">Submit</Button>
+                  <Grid container direction="row" justify="center" alignItems="center" spacing={2}>
+                    <Grid item xs={3}>
+                    <br />
+                    <Button type="submit" color="primary" fullWidth variant="contained">Submit</Button>
+                    </Grid>
                   </Grid>
-                </Grid>
                 </form>
               </div>
     );
