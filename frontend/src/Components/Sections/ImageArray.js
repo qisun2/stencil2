@@ -1,6 +1,6 @@
 import React from "react";
-
 import PropTypes from "prop-types";
+
 import { withStyles } from "@material-ui/core/styles";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -8,8 +8,9 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import LinePlot from "../SubComponents/LinePlot3";
 import Radio from "@material-ui/core/Radio";
+
+import LinePlot from "../SubComponents/LinePlot3";
 
 const styles = {
   card: {
@@ -39,7 +40,7 @@ class ImageArray extends React.Component {
       selectedTab: selectedTab
     });
   };
-  
+
    //function for generating plot
    Plot  =  (props) => {
     let item=props.imgObj;
@@ -50,27 +51,28 @@ class ImageArray extends React.Component {
         <Grid item key={stepId}>
               <img
                 src={"../na.png"}
-                width={sizes[0]} 
+                width={sizes[0]}
                 height={sizes[1]}
+                alt=""
               />
         </Grid>
       )
-  
+
     }
     else {
       switch (item.dataType.toLowerCase()) {
         case "image":
         case "jpg":
-        case "png": 
+        case "png":
         return (sizes===undefined)?(
         <Grid item key={stepId}>
           <img src={item.URL} alt={item.dataLabel} title={item.dataLabel}  />
-          </Grid>):(                      
+          </Grid>):(
         <Grid item key={stepId}>
           <img src={item.URL} alt={item.dataLabel} title={item.dataLabel} width={sizes[0]} height={sizes[1]} />
           </Grid>)
         ;
-           
+
         case "lineplot":
           return (sizes===undefined)?(<Grid item key={stepId}>
             <LinePlot chartData={item.preLoadData?item.preLoadData.compositePlot: {}} width={600} height={500} />
@@ -85,18 +87,18 @@ class ImageArray extends React.Component {
             dataType not known: {item.dataType}
           </Grid>
         )
-      };  
+      };
     }
   }
   // end of show plot function
- 
+
   RadioGroup = (props) => {
     let radioButtonGroupIndex = props.radioButtonGroupIndex;
     let plottitle = props.plottitle;
     let stepId = props.stepId;
     let thisTab= props.thisTab;
     let plotsizes = props.plotsizes;
-    
+
 
     let rgroup = "radioGroup" + String(radioButtonGroupIndex)
     let handleRadioChange = event => {
@@ -107,7 +109,7 @@ class ImageArray extends React.Component {
 
     if (seletedStepId === undefined){
       seletedStepId =stepId[0];
-    } 
+    }
 
     return (
       <Grid item>
@@ -134,8 +136,8 @@ class ImageArray extends React.Component {
           } )
         }
       </Grid>
-      {   
-      <this.Plot imgObj={thisTab[seletedStepId]} sizes={plotsizes[seletedStepId]} />    
+      {
+      <this.Plot imgObj={thisTab[seletedStepId]} sizes={plotsizes[seletedStepId]} />
           }
     </Grid>
     )
@@ -171,7 +173,7 @@ class ImageArray extends React.Component {
     let thisTab = this.props.data[selectedTab];
     let radioButtonGroupIndex = 0;
 
- 
+
 
     return (
       <div className={classes.card}>

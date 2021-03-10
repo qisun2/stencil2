@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 // Material ui styling
 import { withStyles } from "@material-ui/core/styles";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-
-// Material UI components
-import LinearProgress from "@material-ui/core/LinearProgress";
 
 // Sub Components
 import Navbar from "./Components/Navbar";
@@ -171,7 +168,6 @@ class App extends Component {
 
     let proj2Libs = {};
     let backendURL = apiBaseURL + libraryEndPoint;
-    console.log("URL: " + backendURL);
     axios
       .get(backendURL, {withCredentials: true})
       .then(res => {
@@ -180,8 +176,6 @@ class App extends Component {
         let items = [];
         let projSearchList = [];
         if (theUid){
-          console.log("login confirmed");
-
           if (Object.keys(res.data.libraries).length > 0){
             res.data.libraries.forEach(library => {
               if (! proj2Libs.hasOwnProperty(library.projectId)){
@@ -189,22 +183,22 @@ class App extends Component {
               }
               proj2Libs[library.projectId].push ({ "dbid": library.dbId, "libid": library.libraryId});
             })
-    
+
             let theProjList = Object.keys(proj2Libs).sort();
-    
+
             console.log("check default proj: " + proj);
             if ((proj === "") && (theProjList.length>0)) {
               proj = theProjList[0];
               console.log("default proj: " + proj);
             }
-    
+
             if (theProjList){
               projSearchList = theProjList.map(item=>{return({value:item, label:item})})
             }
-            
-            
+
+
             const libList = proj2Libs[proj];
-    
+
             // create the search options; [replace with existing search endpoint in future]
             for (let i = 0; i < libList.length; i++) {
               items.push({ value: libList[i].dbid, label: libList[i].libid });
@@ -213,7 +207,7 @@ class App extends Component {
             items.sort(compareByLabel);
           }
 
-  
+
           this.setState({uid: theUid, role:theRole, allLibraryList: items, currentProject:proj, projList:projSearchList, login:true });
           // console.log(items);
         }
@@ -223,13 +217,13 @@ class App extends Component {
           this.setState({allLibraryList: [], currentProject:"", projList:[], login:false });
         }
 
- 
+
       })
       .catch(err => {
         console.log(err);
       });
 
-    
+
   }
 
   render() {

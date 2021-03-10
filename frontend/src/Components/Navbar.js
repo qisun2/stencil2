@@ -1,21 +1,17 @@
 import React from "react";
+import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
+
+// MaterialUI packages
 import { withStyles } from "@material-ui/core/styles";
-import {
-  Grid,
-  Paper,
-  CardActions,
-  Tooltip,
-  IconButton
-} from "@material-ui/core";
+import { Grid, Paper, CardActions, Tooltip, IconButton } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/HomeOutlined";
-import { Link, withRouter, Route  } from "react-router-dom";
-import Search from "./Search";
-import DataContext from "./DataContext";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
 
+import Search from "./Search";
+import DataContext from "./DataContext";
 import Config from "../Config";
 
 // component styles
@@ -82,7 +78,7 @@ class LandingPage extends React.Component {
                 </Tooltip>
               </Link>
               {
-                (this.props.role==="admin")?(                  
+                (this.props.role==="admin")?(
                   <Link to="/admin">
                   <Tooltip title="Admin" aria-label="admin">
                     <IconButton color="primary">
@@ -91,8 +87,6 @@ class LandingPage extends React.Component {
                   </Tooltip>
                 </Link>
                 ):("")
-
-
               }
               <a href={Config.settings.apiURL + "/logout"}>
                 <Tooltip title="Logout" aria-label="logout">
