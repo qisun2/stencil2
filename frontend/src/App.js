@@ -256,7 +256,7 @@ class App extends Component {
           <BrowserRouter>
             {this.state.login ? (
               <DataProvider value={appData}>
-                <Navbar uid={this.state.uid} role={this.state.role} currentProj={this.state.currentProject} searchOptions={this.state.allLibraryList}  defaultText="Search by library ID" handle="getLib"  />
+                <Navbar uid={this.state.uid} role={this.state.role} currentProj={this.state.currentProject} searchOptions={this.state.allLibraryList}  defaultText="Search by experiment ID" handle="getLib"  />
                 <Switch>
                   <Route exact path="/samples" component={LandingPage} />
                   <Route exact path="/" component={LibrariesPage} />

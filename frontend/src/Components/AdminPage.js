@@ -90,7 +90,7 @@ class AdminPage extends React.Component {
           <div className={classes.jumbotron}>
             <div className={classes.container}>
             <Typography variant="h4" gutterBottom>
-               Stencil Admin
+               STENCIL Admin Console
             </Typography>
             <TableContainer component={Paper}>
               <Table className={classes.table}>

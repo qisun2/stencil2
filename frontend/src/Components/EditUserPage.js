@@ -10,6 +10,7 @@ import axios from "axios";
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+
 const styles = theme => ({
   root: {
     height: "100%",
@@ -60,14 +61,12 @@ class EditUserPage extends React.Component {
 
   componentDidMount() {
     var uid = this.props.match.params.uid;
-    console.log("edit user id");
-    console.log(uid);
+    //console.log("edit user id: ", uid);
     axios
       .get(Config.settings.apiURL + "/libraries/uid/" +uid, {withCredentials: true})
       .then(res => {
         const targets = res.data;
-        console.log("retrieved");
-        console.log(targets.user);
+        //console.log("retrieved: ", targets.user);
         this.setState(targets.user);
       })
       .catch(err => {
@@ -86,17 +85,17 @@ class EditUserPage extends React.Component {
   };
   render() {
     const { classes } = this.props;
-    console.log("render edituser id");
+    // console.log("render edituser id");
     let postBackString = this.props.location.search;
     let headerMsg = "";
     let headerColor ="";
-    if (postBackString === "?1") 
+    if (postBackString === "?1")
     {
       //update successful
       headerMsg = "User information updated.";
       headerColor = "primary";
     }
-    else if (postBackString === "?2") 
+    else if (postBackString === "?2")
     {
       //update not successful, password not matching
       headerMsg = "Passwords do not match.";
@@ -124,30 +123,27 @@ class EditUserPage extends React.Component {
             }
                <input type='hidden' name="uid" value={this.state.userName} />
               <Grid container spacing={2} alignItems="center" direction="row">
-                  <Grid item xs={2}>
+                  <Grid item xs={3}>
                     <Typography variant="body1" gutterBottom>User</Typography>
                   </Grid>
-                  <Grid item xs={2}>
+                  <Grid item xs={3}>
                     <Typography variant="body2" gutterBottom>{this.state.userName}</Typography>
                   </Grid>
               </Grid>
               <Grid container spacing={2} alignItems="center" direction="row">
-                  <Grid item  xs={2}>
+                  <Grid item  xs={3}>
                     <Typography variant="body1" gutterBottom>Email</Typography>
                   </Grid>
-                  <Grid item  xs={2}>
-                  <input
-                    type="text"
-                    name="email"
-                    placeholder={this.state.userEmail}
+                  <Grid item  xs={3}>
+                  <input type="text" name="email" placeholder={this.state.userEmail}
                     size="small" variant="outlined" />
                   </Grid>
               </Grid>
               <Grid container spacing={2} alignItems="center" direction="row">
-                  <Grid item  xs={2}>
+                  <Grid item  xs={3}>
                     <Typography variant="body1" gutterBottom>Role</Typography>
                   </Grid>
-                  <Grid item  xs={2}>
+                  <Grid item  xs={3}>
                     <Select
                       labelId="selectrole"
                       id="selectrole"
@@ -162,10 +158,10 @@ class EditUserPage extends React.Component {
                   </Grid>
               </Grid>
               <Grid container spacing={2} alignItems="center" direction="row">
-                  <Grid item  xs={2}>
+                  <Grid item  xs={3}>
                     <Typography variant="body1" gutterBottom>Status</Typography>
                   </Grid>
-                  <Grid item  xs={2}>
+                  <Grid item  xs={3}>
                     <Select
                       labelId="selectstatus"
                       id="selectstatus"
@@ -179,46 +175,38 @@ class EditUserPage extends React.Component {
                   </Grid>
               </Grid>
               <Grid container spacing={2} alignItems="center" direction="row">
-                  <Grid item  xs={2}>
+                  <Grid item  xs={3}>
                     <Typography variant="body1" gutterBottom>Projects</Typography>
                   </Grid>
-                  <Grid item  xs={2}>
+                  <Grid item  xs={3}>
                   <input
                     type="text"
                     name="projects"
                     value={this.state.projects}
-                    size="small" variant="outlined" 
+                    size="small" variant="outlined"
                     onChange={this.handleChangeProjects}/>
                   </Grid>
               </Grid>
               <Grid container spacing={2} alignItems="center" direction="row">
-                  <Grid item  xs={2}>
+                  <Grid item  xs={3}>
                     <Typography variant="body1" gutterBottom>Password</Typography>
                   </Grid>
-                  <Grid item  xs={2}>
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Leave blank if not changed"
-                    size="small" variant="outlined" />
+                  <Grid item  xs={3}>
+                  <input type="password" name="password" placeholder="Leave blank if not changed" size="small" variant="outlined" />
                   </Grid>
               </Grid>
               <Grid container spacing={2} alignItems="center" direction="row">
-                  <Grid item  xs={2}>
-                    <Typography variant="body1" gutterBottom>Password again</Typography>
+                  <Grid item  xs={3}>
+                    <Typography variant="body1" gutterBottom>Confirm Password</Typography>
                   </Grid>
-                  <Grid item  xs={2}>
-                  <input
-                    type="password"
-                    name="password2"
-                    placeholder="Leave blank if not changed"
-                    size="small" variant="outlined" />
+                  <Grid item  xs={3}>
+                  <input type="password" name="password2" placeholder="Leave blank if not changed" size="small" variant="outlined" />
                   </Grid>
               </Grid>
-              <Grid container spacing={2} direction="row" alignItems="center">
+              <Grid container spacing={2} direction="row" justify="center" alignItems="center">
                   <Grid item  xs={3}>
                   <br />
-                  <Button type="submit" color="primary" fullWidth variant="contained">Submit</Button>
+                  <Button type="submit" color="primary" fullWidth variant="contained">Edit User</Button>
                   </Grid>
                 </Grid>
             </div>

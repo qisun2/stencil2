@@ -1,13 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
+import Button from '@material-ui/core/Button';
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import DataContext from "./DataContext";
+
 import Config from "../Config";
-import axios from "axios";
-import Button from '@material-ui/core/Button';
+import DataContext from "./DataContext";
+
 const styles = theme => ({
   root: {
     height: "100%",
@@ -112,7 +114,7 @@ class AccountPage extends React.Component {
             }
                <input type='hidden' name="uid" value={this.state.userName} />
               <Grid container spacing={2} alignItems="center" direction="row">
-                  <Grid item xs={2}>
+                  <Grid item xs={3}>
                     <Typography variant="body1" gutterBottom>User</Typography>
                   </Grid>
                   <Grid item xs={2}>
@@ -120,7 +122,7 @@ class AccountPage extends React.Component {
                   </Grid>
               </Grid>
               <Grid container spacing={2} alignItems="center" direction="row">
-                  <Grid item  xs={2}>
+                  <Grid item  xs={3}>
                     <Typography variant="body1" gutterBottom>Email</Typography>
                   </Grid>
                   <Grid item  xs={2}>
@@ -132,7 +134,7 @@ class AccountPage extends React.Component {
                   </Grid>
               </Grid>
               <Grid container spacing={2} alignItems="center" direction="row">
-                  <Grid item  xs={2}>
+                  <Grid item  xs={3}>
                     <Typography variant="body1" gutterBottom>Password</Typography>
                   </Grid>
                   <Grid item  xs={2}>
@@ -144,8 +146,8 @@ class AccountPage extends React.Component {
                   </Grid>
               </Grid>
               <Grid container spacing={2} alignItems="center" direction="row">
-                  <Grid item  xs={2}>
-                    <Typography variant="body1" gutterBottom>Password again</Typography>
+                  <Grid item  xs={3}>
+                    <Typography variant="body1" gutterBottom>Confirm Password</Typography>
                   </Grid>
                   <Grid item  xs={2}>
                   <input
@@ -158,7 +160,7 @@ class AccountPage extends React.Component {
               <Grid container spacing={2} direction="row" alignItems="center">
                   <Grid item  xs={3}>
                   <br />
-                  <Button type="submit" color="primary" fullWidth variant="contained">Submit</Button>
+                  <Button type="submit" color="primary" fullWidth variant="contained">Edit User</Button>
                   </Grid>
                 </Grid>
             </div>
