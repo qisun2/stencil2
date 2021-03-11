@@ -15,7 +15,6 @@ import AdminPage from "./Components/AdminPage";
 import AccountPage from "./Components/AccountPage";
 import ProjectPage from "./Components/ProjectPage";
 import EditUserPage from "./Components/EditUserPage";
-import Sample from "./Components/Sample";
 import Library from "./Components/showLibrary"
 import Help from "./Components/Help";
 // React contextAPI for common app data
@@ -83,21 +82,6 @@ const styles = theme => ({
 });
 
 // simple compare function to sort search suggestions
-function compare(a, b) {
-  // Use toUpperCase() to ignore character casing
-  const itemA = a.value.toUpperCase();
-  const itemB = b.value.toUpperCase();
-
-  let comparison = 0;
-  if (itemA > itemB) {
-    comparison = 1;
-  } else if (itemA < itemB) {
-    comparison = -1;
-  }
-  return comparison;
-}
-
-// simple compare function to sort search suggestions
 function compareByLabel(a, b) {
   // Use toUpperCase() to ignore character casing
   const itemA = a.label.toUpperCase();
@@ -128,7 +112,6 @@ class App extends Component {
   componentDidMount() {
     // Retrieve all samples.
     const apiBaseURL =  Config.settings.apiURL;
-    const sampleEndPint = Config.settings.samplesEndpoint;
     const libraryEndPoint = Config.settings.librariesEndPoint;
 
     const url = window.location.href;
@@ -137,32 +120,6 @@ class App extends Component {
     if (found){
       proj = found[1];
     }
-
-
-
-    axios
-      .get(apiBaseURL + sampleEndPint)
-      .then(res => {
-        const targets = res.data.samples.map(sample => {
-          return sample.target;
-        });
-        //  create an array of unique targets
-        const unique = [...new Set(targets)];
-
-        // create the search options; [replace with existing search endpoint in future]
-        const items = [];
-        for (let i = 0; i < unique.length; i++) {
-          items.push({ value: unique[i], label: unique[i] });
-        }
-        // sort the items
-        items.sort(compare);
-
-        this.setState({ data: res.data.samples, searchOptions: items});
-        // console.log(items);
-      })
-      .catch(err => {
-        console.log(err);
-      });
 
     let proj2Libs = {};
     let backendURL = apiBaseURL + libraryEndPoint;
@@ -256,17 +213,11 @@ class App extends Component {
               <DataProvider value={appData}>
                 <Navbar uid={this.state.uid} role={this.state.role} currentProj={this.state.currentProject} searchOptions={this.state.allLibraryList}  defaultText="Search by experiment ID" handle="getLib"  />
                 <Switch>
-                  <Route exact path="/" component={LibrariesPage} />
                   <Route exact path="/login" component={LoginPage} />
                   <Route exact path="/admin" component={AdminPage} />
                   <Route exact path="/account" component={AccountPage} />
                   <Route exact path="/project" component={ProjectPage} />
                   <Route exact path="/edituser/:uid" component={EditUserPage} />
-                  <Route
-                    exact
-                    path="/factor/:protein_name"
-                    component={Sample}
-                  />
                   <Route
                     exact
                     path="/project/:proj_id"
@@ -278,6 +229,7 @@ class App extends Component {
                     component={Library}
                   />
                   <Route exact path="/help/" component={Help} />
+                  <Route exact path="/" component={LibrariesPage} />
                 </Switch>
               </DataProvider>
             ) : (

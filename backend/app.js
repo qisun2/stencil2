@@ -38,11 +38,11 @@ app.use(cors({
 }));
 
 //max age 1 hour
-app.use(session({secret:process.env.SESSION_ENCRYPTION, 
-        cookie: { maxAge: 1 * 60 * 60 * 1000, sameSite: true},  
+app.use(session({secret:process.env.SESSION_ENCRYPTION,
+        cookie: { maxAge: 1 * 60 * 60 * 1000, sameSite: true},
         saveUninitialized:false, resave:false}));
 
- 
+
 // To handle all deprication warnings from mongoose
 // https://mongoosejs.com/docs/deprecations.html
 mongoose.set("useNewUrlParser", true);
@@ -65,7 +65,6 @@ mongoose.Promise = global.Promise;
 app.use(compression());
 
 // add routes
-const sampleRoutes = require("./api/routes/samples");
 const libraryRoutes = require("./api/routes/libraries");
 
 
@@ -76,7 +75,7 @@ app.use("/images", express.static("./sampleData/Images"));
 //app.use('/datasets', createProxyMiddleware({ target: 'http://128.84.9.200:8080', changeOrigin: true }));
 if (process.env.PROXY_SETTING!==undefined){
   let proxyURLs = JSON.parse(process.env.PROXY_SETTING);
-  for (var key of Object.keys(proxyURLs)) 
+  for (var key of Object.keys(proxyURLs))
   {
     app.use(key, createProxyMiddleware({ target: proxyURLs[key], changeOrigin: true }));
   }
@@ -95,7 +94,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ limit: "10mb", extended: true }));
 
 // let express use the specific routes
-app.use("/samples", sampleRoutes);
 app.use("/libraries", libraryRoutes);
 
 
@@ -153,7 +151,7 @@ app.post('/register', async function(req, res) {
   var email = req.body.email.trim();
 	var password = req.body.password.trim();
   var password2 = req.body.password2.trim();
- 
+
 	if (username) {
 
     if (password !== password2){
@@ -173,7 +171,7 @@ app.post('/register', async function(req, res) {
     {
       hashedPassword = "SSO";
     }
-    
+
     console.log(hashedPassword);
 
     let userRole = "guest";
@@ -208,7 +206,7 @@ app.post('/register', async function(req, res) {
 
 app.post('/account', async function(req, res) {
   let frontCaller = process.env.FRONT_API;
-  
+
   var uid = req.body.uid.trim();
 
   if ((queryId === req.session.username) || (req.session.role==="admin")){
@@ -228,7 +226,7 @@ app.post('/account', async function(req, res) {
       const update = { userPassword: hashedPassword };
       await doc.updateOne(update);
     }
-    
+
     return res.redirect(frontCaller + "/account?1");
   }
   else
