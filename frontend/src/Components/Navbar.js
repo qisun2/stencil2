@@ -7,8 +7,9 @@ import { withStyles } from "@material-ui/core/styles";
 import { Grid, Paper, CardActions, Tooltip, IconButton } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/HomeOutlined";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import Search from "./Search";
 import DataContext from "./DataContext";
@@ -69,7 +70,13 @@ class NavBar extends React.Component {
                   </IconButton>
                 </Tooltip>
               </Link>
-
+              <Link to="/project">
+                <Tooltip title="Project" aria-label="project">
+                  <IconButton color="primary">
+                    <AccountTreeIcon />
+                  </IconButton>
+                </Tooltip>
+              </Link>
               <Link to="/account">
                 <Tooltip title="Account" aria-label="account">
                   <IconButton color="primary">

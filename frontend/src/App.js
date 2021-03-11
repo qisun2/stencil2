@@ -13,6 +13,7 @@ import LibrariesPage from "./Components/LibrariesPage";
 import LoginPage from "./Components/LoginPage";
 import AdminPage from "./Components/AdminPage";
 import AccountPage from "./Components/AccountPage";
+import ProjectPage from "./Components/ProjectPage";
 import EditUserPage from "./Components/EditUserPage";
 import Sample from "./Components/Sample";
 import Library from "./Components/showLibrary"
@@ -183,7 +184,7 @@ class App extends Component {
 
             let theProjList = Object.keys(proj2Libs).sort();
 
-            console.log("check default proj: " + proj);
+            //console.log("check default proj: " + proj);
             if ((proj === "") && (theProjList.length>0)) {
               proj = theProjList[0];
               console.log("default proj: " + proj);
@@ -259,6 +260,7 @@ class App extends Component {
                   <Route exact path="/login" component={LoginPage} />
                   <Route exact path="/admin" component={AdminPage} />
                   <Route exact path="/account" component={AccountPage} />
+                  <Route exact path="/project" component={ProjectPage} />
                   <Route exact path="/edituser/:uid" component={EditUserPage} />
                   <Route
                     exact
