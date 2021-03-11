@@ -9,7 +9,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 // Sub Components
 import Navbar from "./Components/Navbar";
-import LandingPage from "./Components/LandingPage";
 import LibrariesPage from "./Components/LibrariesPage";
 import LoginPage from "./Components/LoginPage";
 import AdminPage from "./Components/AdminPage";
@@ -256,7 +255,6 @@ class App extends Component {
               <DataProvider value={appData}>
                 <Navbar uid={this.state.uid} role={this.state.role} currentProj={this.state.currentProject} searchOptions={this.state.allLibraryList}  defaultText="Search by experiment ID" handle="getLib"  />
                 <Switch>
-                  <Route exact path="/samples" component={LandingPage} />
                   <Route exact path="/" component={LibrariesPage} />
                   <Route exact path="/login" component={LoginPage} />
                   <Route exact path="/admin" component={AdminPage} />
