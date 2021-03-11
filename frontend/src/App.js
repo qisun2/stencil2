@@ -9,7 +9,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 // Sub Components
 import Navbar from "./Components/Navbar";
-import ExploreGrid from "./Components/ExploreGrid";
 import LandingPage from "./Components/LandingPage";
 import LibrariesPage from "./Components/LibrariesPage";
 import LoginPage from "./Components/LoginPage";
@@ -22,7 +21,6 @@ import Help from "./Components/Help";
 // React contextAPI for common app data
 import { DataProvider } from "./Components/DataContext";
 import Config from "./Config";
-
 
 // creating a themes with default fontfamily
 const theme1 = createMuiTheme({
@@ -280,7 +278,6 @@ class App extends Component {
                     component={Library}
                   />
                   <Route exact path="/help/" component={Help} />
-                  <Route exact path="/explore/" component={ExploreGrid} />
                 </Switch>
               </DataProvider>
             ) : (
