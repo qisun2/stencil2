@@ -45,19 +45,6 @@ const styles = theme => ({
     paddingRight: 15,
     paddingLeft: 15,
     margin: "auto"
-  },
-  center: {
-    margin: "auto",
-    maxWidth: 1140
-  },
-  leftIcon: {
-    marginRight: theme.spacing(1)
-  },
-  companyLogo: {
-    width: 160
-  },
-  copyrightStyle: {
-    textAlign: "center"
   }
 });
 
