@@ -24,7 +24,7 @@ const styles = {
   }
 };
 
-class LandingPage extends React.Component {
+class NavBar extends React.Component {
   static contextType = DataContext;
 
   render() {
@@ -106,8 +106,8 @@ class LandingPage extends React.Component {
   }
 }
 
-LandingPage.propTypes = {
+NavBar.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withRouter(withStyles(styles)(LandingPage));
+export default withRouter(withStyles(styles)(NavBar));
