@@ -69,7 +69,7 @@ const libraryRoutes = require("./api/routes/libraries");
 
 
 // adding static resources
-app.use("/images", express.static("./sampleData/Images"));
+app.use("/localdata", express.static("./sampleData/localdata"));
 
 //add api proxy
 //app.use('/datasets', createProxyMiddleware({ target: 'http://128.84.9.200:8080', changeOrigin: true }));
