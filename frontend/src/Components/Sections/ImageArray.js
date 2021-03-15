@@ -46,6 +46,11 @@ class ImageArray extends React.Component {
     let item=props.imgObj;
     let sizes = props.sizes;
     let stepId = (item!==undefined)?(item.stepId):("X");
+
+    //console.log(item);
+    //console.log(sizes);
+    //console.log(stepId);
+
     if(item===undefined){
       return (
         <Grid item key={stepId}>
@@ -64,6 +69,7 @@ class ImageArray extends React.Component {
         case "image":
         case "jpg":
         case "png":
+        case "svg":
         return (sizes===undefined)?(
         <Grid item key={stepId}>
           <img src={item.URL} alt={item.dataLabel} title={item.dataLabel}  />
@@ -74,6 +80,9 @@ class ImageArray extends React.Component {
         ;
 
         case "lineplot":
+          //console.log(item);
+          //console.log(item.preLoadData);
+
           return (sizes===undefined)?(<Grid item key={stepId}>
             <LinePlot chartData={item.preLoadData?item.preLoadData.compositePlot: {}} width={600} height={500} />
             </Grid>):(
