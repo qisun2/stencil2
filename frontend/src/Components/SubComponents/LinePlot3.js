@@ -31,8 +31,9 @@ const useStyles = makeStyles({
 function FeatureCompositePlot(props) {
   const  classes  = useStyles(props);
 
-
   var chartData = props.chartData;
+  console.log("Chart data: ", chartData);
+
   if (chartData["Xaxis"] === undefined ){
     return "The data does not hava a required key Xaxis";
   }
@@ -63,7 +64,7 @@ function FeatureCompositePlot(props) {
         //if (i%2 == 0){
           let x = parseInt(xValues[i]);
           let y = parseFloat(yValues[i]);
-  
+
           if (y>yMaxValue){
             yMaxValue = y;
           }
@@ -96,7 +97,7 @@ function FeatureCompositePlot(props) {
       tickSize: 5,
       tickPadding: 5,
       tickRotation: 0,
-      legend: "Distance from TSS (bp)",
+      legend: "Distance from midpoint (bp)",
       legendOffset: 46,
       legendPosition: "middle"
     },
