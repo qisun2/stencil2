@@ -1,0 +1,56 @@
+{
+	"genome": "sacCer3",
+	"historyId": "6fb17d0cc6e8fae5",
+	"parameters": {},
+	"projectId": "YEP",
+	"libraryType": "ChIP-exo",
+	"sampleId": "Reb1",
+	"run": 396,
+	"libraryId": "localSample2",
+	"statsToolId": "script_manager_4color_stencil",
+	"createdBy": "cegr@psu.edu",
+	"token": "a23Ta13q",
+	"submitter": "cegr@psu.edu",
+	"workflowId": "unknown",
+	"statistics": [{}],
+	"libraryData": [{
+    "id": "0c5d7fa180a56458",
+    "dataType": "svg",
+    "layoutId": "Motif_Analysis",
+    "tabId": "Motif1",
+    "URL": "http://localhost:8081/localdata/heatmap.svg",
+    "stepId": "1"
+  },
+	{
+		"id": "0c5d7fa180a56458",
+		"dataType": "png",
+		"layoutId": "Motif_Analysis",
+		"tabId": "Motif1",
+		"URL": "http://localhost:8081/localdata/motif.png",
+		"stepId": "2"
+	},
+	{
+		"id": "0c5d7fa180a56458",
+		"dataType": "png",
+		"layoutId": "Motif_Analysis",
+		"tabId": "Motif1",
+		"URL": "http://localhost:8081/localdata/motif_rc.png",
+		"stepId": "3"
+	},
+	{
+		"id": "0c5d7fa180a56458",
+		"dataType": "linePlot",
+		"layoutId": "Motif_Analysis",
+		"tabId": "Motif1",
+		"URL": "http://localhost:8081/localdata/composite.json",
+		"stepId": "0"
+	},
+	{
+		"id": "0c5d7fa180a56458",
+		"dataType": "png",
+		"layoutId": "Motif_Analysis",
+		"tabId": "Motif1",
+		"URL": "http://localhost:8081/localdata/4color.svg",
+		"stepId": "4"
+	}]
+}
